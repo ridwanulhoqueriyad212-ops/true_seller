@@ -1283,8 +1283,7 @@ const OPENROUTER_API_KEY =
     "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";
 
 const OPENROUTER_MODEL =
-    "meta-llama/llama-3.3-8b-instruct:free";
-
+    "nvidia/nemotron-3.5-lightning:free";
 const OPENROUTER_URL =
     "https://openrouter.ai/api/v1/chat/completions";
 
