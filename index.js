@@ -195,6 +195,66 @@ const selectedProductImage =
 
 
 /* =========================================
+   HYBRID CHAT DOM
+========================================= */
+
+const hybridChatButton =
+    document.getElementById(
+        "hybridChatButton"
+    );
+
+const hybridChatModal =
+    document.getElementById(
+        "hybridChatModal"
+    );
+
+const hybridChatClose =
+    document.getElementById(
+        "hybridChatClose"
+    );
+
+const chatChoiceScreen =
+    document.getElementById(
+        "chatChoiceScreen"
+    );
+
+const aiAssistantScreen =
+    document.getElementById(
+        "aiAssistantScreen"
+    );
+
+const adminHelpScreen =
+    document.getElementById(
+        "adminHelpScreen"
+    );
+
+const openAiAssistant =
+    document.getElementById(
+        "openAiAssistant"
+    );
+
+const openAdminHelp =
+    document.getElementById(
+        "openAdminHelp"
+    );
+
+const aiMessages =
+    document.getElementById(
+        "aiMessages"
+    );
+
+const aiChatForm =
+    document.getElementById(
+        "aiChatForm"
+    );
+
+const aiChatInput =
+    document.getElementById(
+        "aiChatInput"
+    );
+
+
+/* =========================================
    DATA
 ========================================= */
 
@@ -321,9 +381,7 @@ function renderProducts() {
             .toLowerCase();
 
 
-    /* =====================================
-       SEARCH FILTER
-    ===================================== */
+    /* SEARCH FILTER */
 
     const filteredProducts =
         productEntries.filter(
@@ -343,9 +401,7 @@ function renderProducts() {
         );
 
 
-    /* =====================================
-       COUNT
-    ===================================== */
+    /* COUNT */
 
     if (productCount) {
 
@@ -355,9 +411,7 @@ function renderProducts() {
     }
 
 
-    /* =====================================
-       EMPTY
-    ===================================== */
+    /* EMPTY */
 
     if (
         filteredProducts.length === 0
@@ -432,9 +486,7 @@ function renderProducts() {
     }
 
 
-    /* =====================================
-       PRODUCT CARDS
-    ===================================== */
+    /* PRODUCT CARDS */
 
     filteredProducts.forEach(
         ([id, product]) => {
@@ -682,6 +734,13 @@ function openOrderModal(
     }
 
 
+    if (orderForm) {
+
+        orderForm.reset();
+
+    }
+
+
     if (selectedProductId) {
 
         selectedProductId.value =
@@ -719,13 +778,6 @@ function openOrderModal(
         selectedProductImage.alt =
             product.name ||
             "Product";
-
-    }
-
-
-    if (orderForm) {
-
-        orderForm.reset();
 
     }
 
@@ -1255,6 +1307,1079 @@ if (successBox) {
 
 
 /* =========================================
+   TRUE SELLER HYBRID CHAT
+========================================= */
+
+
+/* -----------------------------------------
+   OPEN / CLOSE CHAT
+----------------------------------------- */
+
+function openHybridChat() {
+
+    if (!hybridChatModal) return;
+
+    hybridChatModal.classList.add(
+        "active"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+function closeHybridChat() {
+
+    if (!hybridChatModal) return;
+
+    hybridChatModal.classList.remove(
+        "active"
+    );
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+if (hybridChatButton) {
+
+    hybridChatButton.addEventListener(
+        "click",
+        openHybridChat
+    );
+
+}
+
+
+if (hybridChatClose) {
+
+    hybridChatClose.addEventListener(
+        "click",
+        closeHybridChat
+    );
+
+}
+
+
+if (hybridChatModal) {
+
+    hybridChatModal.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                event.target ===
+                hybridChatModal
+            ) {
+
+                closeHybridChat();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* -----------------------------------------
+   CHAT SCREEN SWITCHING
+----------------------------------------- */
+
+function showChatScreen(
+    screen
+) {
+
+    if (chatChoiceScreen) {
+
+        chatChoiceScreen.classList.remove(
+            "active"
+        );
+
+    }
+
+
+    if (aiAssistantScreen) {
+
+        aiAssistantScreen.classList.remove(
+            "active"
+        );
+
+    }
+
+
+    if (adminHelpScreen) {
+
+        adminHelpScreen.classList.remove(
+            "active"
+        );
+
+    }
+
+
+    if (screen === "choice") {
+
+        if (chatChoiceScreen) {
+
+            chatChoiceScreen.classList.add(
+                "active"
+            );
+
+        }
+
+    }
+
+
+    if (screen === "ai") {
+
+        if (aiAssistantScreen) {
+
+            aiAssistantScreen.classList.add(
+                "active"
+            );
+
+        }
+
+    }
+
+
+    if (screen === "admin") {
+
+        if (adminHelpScreen) {
+
+            adminHelpScreen.classList.add(
+                "active"
+            );
+
+        }
+
+    }
+
+}
+
+
+/* -----------------------------------------
+   AI BUTTON
+----------------------------------------- */
+
+if (openAiAssistant) {
+
+    openAiAssistant.addEventListener(
+        "click",
+        () => {
+
+            showChatScreen(
+                "ai"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    if (aiChatInput) {
+
+                        aiChatInput.focus();
+
+                    }
+
+                },
+                100
+            );
+
+        }
+    );
+
+}
+
+
+/* -----------------------------------------
+   ADMIN BUTTON
+----------------------------------------- */
+
+if (openAdminHelp) {
+
+    openAdminHelp.addEventListener(
+        "click",
+        () => {
+
+            showChatScreen(
+                "admin"
+            );
+
+        }
+    );
+
+}
+
+
+/* -----------------------------------------
+   BACK BUTTONS
+----------------------------------------- */
+
+document
+    .querySelectorAll(
+        ".chat-back-button"
+    )
+    .forEach(
+        (button) => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    showChatScreen(
+                        "choice"
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+/* -----------------------------------------
+   AI MESSAGE
+----------------------------------------- */
+
+function addAiMessage(
+    text,
+    type
+) {
+
+    if (!aiMessages) return;
+
+
+    const message =
+        document.createElement(
+            "div"
+        );
+
+
+    message.className =
+        `ai-message ${
+            type === "user"
+                ? "user-message"
+                : "bot-message"
+        }`;
+
+
+    message.textContent =
+        text;
+
+
+    aiMessages.appendChild(
+        message
+    );
+
+
+    aiMessages.scrollTop =
+        aiMessages.scrollHeight;
+
+}
+
+
+/* -----------------------------------------
+   LANGUAGE DETECTION
+----------------------------------------- */
+
+function detectChatLanguage(
+    text
+) {
+
+    const value =
+        String(text || "").trim();
+
+
+    if (/[\u0980-\u09FF]/.test(value)) {
+
+        return "bangla";
+
+    }
+
+
+    const lower =
+        value.toLowerCase();
+
+
+    const banglishWords = [
+        "ki",
+        "koto",
+        "ase",
+        "ache",
+        "nai",
+        "daam",
+        "dam",
+        "price",
+        "stock",
+        "pabo",
+        "nibo",
+        "niben",
+        "chai",
+        "lagbe",
+        "apnader",
+        "product",
+        "kemon"
+    ];
+
+
+    const hasBanglish =
+        banglishWords.some(
+            (word) =>
+                lower.includes(
+                    word
+                )
+        );
+
+
+    if (hasBanglish) {
+
+        return "banglish";
+
+    }
+
+
+    return "english";
+
+}
+
+
+/* -----------------------------------------
+   FIND PRODUCT
+----------------------------------------- */
+
+function findChatProduct(
+    text
+) {
+
+    const value =
+        String(text || "")
+            .toLowerCase()
+            .trim();
+
+
+    const entries =
+        Object.entries(
+            products || {}
+        );
+
+
+    if (!entries.length) {
+
+        return null;
+
+    }
+
+
+    /* EXACT / PARTIAL NAME */
+
+    let match =
+        entries.find(
+            ([id, product]) => {
+
+                const name =
+                    String(
+                        product.name || ""
+                    ).toLowerCase();
+
+
+                return (
+                    value.includes(name) ||
+                    name.includes(value)
+                );
+
+            }
+        );
+
+
+    if (match) {
+
+        return match;
+
+    }
+
+
+    /* WORD MATCH */
+
+    const words =
+        value
+            .split(
+                /\s+/
+            )
+            .filter(
+                (word) =>
+                    word.length >= 3
+            );
+
+
+    let bestProduct =
+        null;
+
+    let bestScore =
+        0;
+
+
+    entries.forEach(
+        ([id, product]) => {
+
+            const name =
+                String(
+                    product.name || ""
+                ).toLowerCase();
+
+
+            let score =
+                0;
+
+
+            words.forEach(
+                (word) => {
+
+                    if (
+                        name.includes(
+                            word
+                        )
+                    ) {
+
+                        score++;
+
+                    }
+
+                }
+            );
+
+
+            if (
+                score > bestScore
+            ) {
+
+                bestScore =
+                    score;
+
+                bestProduct =
+                    [id, product];
+
+            }
+
+        }
+    );
+
+
+    return bestProduct;
+
+}
+
+
+/* -----------------------------------------
+   PRODUCT RESPONSE
+----------------------------------------- */
+
+function createProductResponse(
+    productEntry,
+    language
+) {
+
+    if (!productEntry) {
+
+        if (
+            language ===
+            "bangla"
+        ) {
+
+            return "🤖 দুঃখিত, এই নামে কোনো product খুঁজে পেলাম না। 🛍️";
+
+        }
+
+
+        if (
+            language ===
+            "banglish"
+        ) {
+
+            return "🤖 Sorry vai, ei name kono product khuje pelam na. 🛍️";
+
+        }
+
+
+        return "🤖 Sorry, I couldn't find that product. 🛍️";
+
+    }
+
+
+    const product =
+        productEntry[1];
+
+
+    const name =
+        String(
+            product.name ||
+            "Product"
+        );
+
+
+    const price =
+        Number(
+            product.price || 0
+        );
+
+
+    const stock =
+        Number(
+            product.stock || 0
+        );
+
+
+    if (
+        language ===
+        "bangla"
+    ) {
+
+        if (stock > 0) {
+
+            return (
+                `🛍️ ${name} 🔥\n` +
+                `💰 দাম: ${price.toLocaleString()}৳ 🙃\n` +
+                `📦 স্টক: ${stock} pcs ✅`
+            );
+
+        }
+
+
+        return (
+            `🛍️ ${name} 🔥\n` +
+            `💰 দাম: ${price.toLocaleString()}৳ 🙃\n` +
+            `📦 স্টক: বর্তমানে শেষ 😔`
+        );
+
+    }
+
+
+    if (
+        language ===
+        "banglish"
+    ) {
+
+        if (stock > 0) {
+
+            return (
+                `🛍️ ${name} 🔥\n` +
+                `💰 Price: ${price.toLocaleString()}৳ 🙃\n` +
+                `📦 Stock: ${stock} pcs ache ✅`
+            );
+
+        }
+
+
+        return (
+            `🛍️ ${name} 🔥\n` +
+            `💰 Price: ${price.toLocaleString()}৳ 🙃\n` +
+            `📦 Stock: ekhon shesh 😔`
+        );
+
+    }
+
+
+    if (stock > 0) {
+
+        return (
+            `🛍️ ${name} 🔥\n` +
+            `💰 Price: ${price.toLocaleString()}৳ 🙃\n` +
+            `📦 Stock: ${stock} pcs available ✅`
+        );
+
+    }
+
+
+    return (
+        `🛍️ ${name} 🔥\n` +
+        `💰 Price: ${price.toLocaleString()}৳ 🙃\n` +
+        `📦 Stock: Currently out of stock 😔`
+    );
+
+}
+
+
+/* -----------------------------------------
+   GENERAL AI RESPONSE
+----------------------------------------- */
+
+function getAiResponse(
+    userText
+) {
+
+    const language =
+        detectChatLanguage(
+            userText
+        );
+
+
+    const lower =
+        String(userText || "")
+            .toLowerCase();
+
+
+    const product =
+        findChatProduct(
+            userText
+        );
+
+
+    /* PRODUCT QUERY */
+
+    const productKeywords = [
+        "product",
+        "price",
+        "stock",
+        "available",
+        "available?",
+        "dam",
+        "daam",
+        "koto",
+        "ache",
+        "ase",
+        "nai",
+        "pabo",
+        "product ki",
+        "product name"
+    ];
+
+
+    const asksAboutProduct =
+        productKeywords.some(
+            (keyword) =>
+                lower.includes(
+                    keyword
+                )
+        );
+
+
+    if (
+        product ||
+        asksAboutProduct
+    ) {
+
+        if (product) {
+
+            return createProductResponse(
+                product,
+                language
+            );
+
+        }
+
+
+        if (
+            language ===
+            "bangla"
+        ) {
+
+            return "🤖 অবশ্যই! কোন product-এর নাম বলুন, আমি তার price ও stock জানিয়ে দিচ্ছি। 🛍️";
+
+        }
+
+
+        if (
+            language ===
+            "banglish"
+        ) {
+
+            return "🤖 Obosshoi! Product-er name bolen, ami price ar stock bole dibo. 🛍️";
+
+        }
+
+
+        return "🤖 Sure! Tell me the product name and I can show you its price and stock. 🛍️";
+
+    }
+
+
+    /* GREETING */
+
+    const greetingWords = [
+        "hi",
+        "hello",
+        "hey",
+        "salam",
+        "assalamu",
+        "আসসালামু",
+        "হাই",
+        "হ্যালো"
+    ];
+
+
+    const isGreeting =
+        greetingWords.some(
+            (word) =>
+                lower.includes(
+                    word
+                )
+        );
+
+
+    if (isGreeting) {
+
+        if (
+            language ===
+            "bangla"
+        ) {
+
+            return "🤖 আসসালামু আলাইকুম! True Seller-এ স্বাগতম। 🛍️ কোন product সম্পর্কে জানতে চান?";
+
+        }
+
+
+        if (
+            language ===
+            "banglish"
+        ) {
+
+            return "🤖 Assalamu Alaikum! True Seller-e welcome. 🛍️ Kon product somporke jante chan?";
+
+        }
+
+
+        return "🤖 Hello! Welcome to True Seller. 🛍️ Which product would you like to know about?";
+
+    }
+
+
+    /* THANK YOU */
+
+    if (
+        lower.includes("thanks") ||
+        lower.includes("thank you") ||
+        lower.includes("ধন্যবাদ")
+    ) {
+
+        if (
+            language ===
+            "bangla"
+        ) {
+
+            return "🤖 আপনাকেও ধন্যবাদ! True Seller-এর সাথে থাকার জন্য। ❤️";
+
+        }
+
+
+        if (
+            language ===
+            "banglish"
+        ) {
+
+            return "🤖 Apnakeo thanks! True Seller-er sathe thakar jonno. ❤️";
+
+        }
+
+
+        return "🤖 You're welcome! Thanks for choosing True Seller. ❤️";
+
+    }
+
+
+    /* FALLBACK */
+
+    if (
+        language ===
+        "bangla"
+    ) {
+
+        return "🤖 আপনার প্রশ্নটা হয়তো আমি বুঝিনি। 🛍️ Product-এর নাম, price বা stock সম্পর্কে জিজ্ঞেস করতে পারেন।";
+
+    }
+
+
+    if (
+        language ===
+        "banglish"
+    ) {
+
+        return "🤖 Apnar question-ta hoyto bujhte pari nai. 🛍️ Product-er name, price ba stock niye jiggesh korte paren.";
+
+    }
+
+
+    return "🤖 I may not have understood your question. 🛍️ You can ask me about a product, price, or stock.";
+
+}
+
+
+/* -----------------------------------------
+   AI CHAT SUBMIT
+----------------------------------------- */
+
+if (aiChatForm) {
+
+    aiChatForm.addEventListener(
+        "submit",
+        (event) => {
+
+            event.preventDefault();
+
+
+            const text =
+                aiChatInput
+                    ? aiChatInput.value.trim()
+                    : "";
+
+
+            if (!text) return;
+
+
+            addAiMessage(
+                text,
+                "user"
+            );
+
+
+            if (aiChatInput) {
+
+                aiChatInput.value =
+                    "";
+
+            }
+
+
+            setTimeout(
+                () => {
+
+                    const response =
+                        getAiResponse(
+                            text
+                        );
+
+
+                    addAiMessage(
+                        response,
+                        "bot"
+                    );
+
+                },
+                250
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   DRAGGABLE ROBOT BUTTON
+========================================= */
+
+let chatDragging =
+    false;
+
+let chatMoved =
+    false;
+
+let chatStartX =
+    0;
+
+let chatStartY =
+    0;
+
+let chatOriginalX =
+    0;
+
+let chatOriginalY =
+    0;
+
+
+if (hybridChatButton) {
+
+    hybridChatButton.addEventListener(
+        "pointerdown",
+        (event) => {
+
+            chatDragging =
+                true;
+
+            chatMoved =
+                false;
+
+
+            const rect =
+                hybridChatButton.getBoundingClientRect();
+
+
+            chatStartX =
+                event.clientX;
+
+            chatStartY =
+                event.clientY;
+
+
+            chatOriginalX =
+                rect.left;
+
+            chatOriginalY =
+                rect.top;
+
+
+            hybridChatButton.style.left =
+                `${chatOriginalX}px`;
+
+            hybridChatButton.style.top =
+                `${chatOriginalY}px`;
+
+            hybridChatButton.style.right =
+                "auto";
+
+            hybridChatButton.style.bottom =
+                "auto";
+
+
+            try {
+
+                hybridChatButton.setPointerCapture(
+                    event.pointerId
+                );
+
+            } catch (error) {
+
+                console.log(
+                    "Pointer capture unavailable."
+                );
+
+            }
+
+        }
+    );
+
+
+    hybridChatButton.addEventListener(
+        "pointermove",
+        (event) => {
+
+            if (!chatDragging) return;
+
+
+            const deltaX =
+                event.clientX -
+                chatStartX;
+
+
+            const deltaY =
+                event.clientY -
+                chatStartY;
+
+
+            if (
+                Math.abs(deltaX) > 5 ||
+                Math.abs(deltaY) > 5
+            ) {
+
+                chatMoved =
+                    true;
+
+            }
+
+
+            let newX =
+                chatOriginalX +
+                deltaX;
+
+
+            let newY =
+                chatOriginalY +
+                deltaY;
+
+
+            const maxX =
+                window.innerWidth -
+                hybridChatButton.offsetWidth -
+                5;
+
+
+            const maxY =
+                window.innerHeight -
+                hybridChatButton.offsetHeight -
+                5;
+
+
+            newX =
+                Math.max(
+                    5,
+                    Math.min(
+                        newX,
+                        maxX
+                    )
+                );
+
+
+            newY =
+                Math.max(
+                    5,
+                    Math.min(
+                        newY,
+                        maxY
+                    )
+                );
+
+
+            hybridChatButton.style.left =
+                `${newX}px`;
+
+            hybridChatButton.style.top =
+                `${newY}px`;
+
+        }
+    );
+
+
+    hybridChatButton.addEventListener(
+        "pointerup",
+        (event) => {
+
+            if (!chatDragging) return;
+
+
+            chatDragging =
+                false;
+
+
+            try {
+
+                hybridChatButton.releasePointerCapture(
+                    event.pointerId
+                );
+
+            } catch (error) {
+
+                console.log(
+                    "Pointer release unavailable."
+                );
+
+            }
+
+
+            if (!chatMoved) {
+
+                openHybridChat();
+
+            }
+
+        }
+    );
+
+
+    hybridChatButton.addEventListener(
+        "pointercancel",
+        () => {
+
+            chatDragging =
+                false;
+
+        }
+    );
+
+}
+
+
+/* =========================================
    ESCAPE HTML
 ========================================= */
 
@@ -1284,4 +2409,4 @@ function escapeHtml(value) {
             "&#039;"
         );
 
-}
+    }
