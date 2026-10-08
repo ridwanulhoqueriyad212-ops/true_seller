@@ -3,7 +3,7 @@
    Same robot/chat UI, Gemini is the answer brain
 ========================================= */
 
-const GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE";
+const GEMINI_API_KEY="AQ.Ab8RN6IYudb93CnyHUYlWFY8vGQ3hINUfQ0LbO8vT-1Wy69hdw";
 const GEMINI_MODEL="gemini-3.8-flash";
 
 const GEMINI_URL =
