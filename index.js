@@ -1274,7 +1274,6 @@ function escapeHtml(value) {
         );
 
 }
-
 /* =========================================
    TRUE SELLER AI ASSISTANT
    OpenRouter + Firebase Products
@@ -1285,6 +1284,7 @@ const OPENROUTER_API_KEY =
 
 const OPENROUTER_MODEL =
     "meta-llama/llama-3.3-8b-instruct:free";
+
 const OPENROUTER_URL =
     "https://openrouter.ai/api/v1/chat/completions";
 
@@ -1294,59 +1294,37 @@ const OPENROUTER_URL =
 ========================================= */
 
 const hybridChatButton =
-    document.getElementById(
-        "hybridChatButton"
-    );
+    document.getElementById("hybridChatButton");
 
 const hybridChatModal =
-    document.getElementById(
-        "hybridChatModal"
-    );
+    document.getElementById("hybridChatModal");
 
 const hybridChatClose =
-    document.getElementById(
-        "hybridChatClose"
-    );
+    document.getElementById("hybridChatClose");
 
 const chatChoiceScreen =
-    document.getElementById(
-        "chatChoiceScreen"
-    );
+    document.getElementById("chatChoiceScreen");
 
 const aiAssistantScreen =
-    document.getElementById(
-        "aiAssistantScreen"
-    );
+    document.getElementById("aiAssistantScreen");
 
 const adminHelpScreen =
-    document.getElementById(
-        "adminHelpScreen"
-    );
+    document.getElementById("adminHelpScreen");
 
 const openAiAssistant =
-    document.getElementById(
-        "openAiAssistant"
-    );
+    document.getElementById("openAiAssistant");
 
 const openAdminHelp =
-    document.getElementById(
-        "openAdminHelp"
-    );
+    document.getElementById("openAdminHelp");
 
 const aiMessages =
-    document.getElementById(
-        "aiMessages"
-    );
+    document.getElementById("aiMessages");
 
 const aiChatForm =
-    document.getElementById(
-        "aiChatForm"
-    );
+    document.getElementById("aiChatForm");
 
 const aiChatInput =
-    document.getElementById(
-        "aiChatInput"
-    );
+    document.getElementById("aiChatInput");
 
 
 /* =========================================
@@ -1368,23 +1346,22 @@ You are the official AI assistant of True Seller.
 Your name:
 True Seller AI Assistant.
 
-Your personality:
+PERSONALITY:
 - Friendly
 - Helpful
 - Natural
 - Warm
 - Conversational
-- Sometimes light/fun
+- Sometimes light and funny
 - Never robotic
 - Never overly formal
-- You may use "vai" naturally when the user uses Banglish/Bangla casually.
+- You may use "vai" naturally in casual Bangla or Banglish.
 
-IMPORTANT LANGUAGE RULE:
-- If the user writes Bangla, reply in Bangla.
-- If the user writes English, reply in English.
-- If the user writes Banglish/Romanized Bangla, reply in Banglish.
-- If the user mixes Bangla and English, naturally match the mixture.
-- Do not force English when the user is speaking Bangla/Banglish.
+LANGUAGE RULE:
+- Bangla user = Bangla reply.
+- English user = English reply.
+- Banglish user = Banglish reply.
+- Mixed language = naturally match the user's style.
 
 EMOJI RULE:
 Every reply must contain at least one suitable emoji.
@@ -1415,8 +1392,8 @@ Payment methods:
 WhatsApp:
 The website WhatsApp button can be used to contact support.
 
-IMPORTANT PRODUCT RULE:
-Product information supplied in the PRODUCT DATA section is the source of truth.
+PRODUCT RULE:
+The CURRENT PRODUCT DATA supplied with the request is the ONLY source of truth for product information.
 
 When answering about:
 - product name
@@ -1424,27 +1401,28 @@ When answering about:
 - stock
 - availability
 
-ONLY use the supplied PRODUCT DATA.
+ONLY use CURRENT PRODUCT DATA.
 
 NEVER invent:
-- product prices
-- stock numbers
+- prices
+- stock
 - product names
 - discounts
 - delivery charges
-- product specifications
+- specifications
 
-If product information is not available, say that you cannot confirm it from the current product data.
+If the requested product is not in the product data, say you cannot confirm it from the current product list.
 
-You can talk naturally about normal conversation too.
+NORMAL CONVERSATION:
+You can naturally answer casual questions.
 
-For example:
+Example:
 User: kemon acho
-You can answer naturally:
+Answer:
 Alhamdulillah vai, ami valo achi 😊 apni kemon achen?
 
 User: ki koro
-You can answer naturally:
+Answer:
 Boshe achi vai, apnar message-er reply dicchi 😄 bolen ki lagbe?
 
 Do not pretend to be a human.
@@ -1453,9 +1431,9 @@ You are an AI assistant.
 Do not claim that an order has been placed unless the website actually confirms it.
 
 If the user asks how to order:
-Tell them to choose a product and press the Order Now button, then complete the order form.
+Tell them to choose a product and press Order Now, then complete the order form.
 
-Keep answers reasonably short and useful unless the user asks for detail.
+Keep answers reasonably short and useful.
 `;
 
 
@@ -1466,9 +1444,7 @@ Keep answers reasonably short and useful unless the user asks for detail.
 function getProductDataForAI() {
 
     const entries =
-        Object.entries(
-            products || {}
-        );
+        Object.entries(products || {});
 
     if (!entries.length) {
 
@@ -1476,37 +1452,31 @@ function getProductDataForAI() {
 
     }
 
-    return entries
-        .map(([id, product]) => {
+    return entries.map(([id, product]) => {
 
-            const name =
-                product.name ||
-                "Unnamed Product";
+        const name =
+            product?.name ||
+            "Unnamed Product";
 
-            const price =
-                Number(
-                    product.price || 0
-                );
+        const price =
+            Number(product?.price || 0);
 
-            const stock =
-                Number(
-                    product.stock || 0
-                );
+        const stock =
+            Number(product?.stock || 0);
 
-            return `
+        return `
 Product ID: ${id}
 Name: ${name}
 Price: ৳${price}
 Stock: ${stock} pcs
 Availability: ${
-                stock > 0
-                    ? "Available"
-                    : "Out of Stock"
-            }
-            `;
+            stock > 0
+                ? "Available"
+                : "Out of Stock"
+        }
+`;
 
-        })
-        .join("\n");
+    }).join("\n");
 }
 
 
@@ -1529,8 +1499,11 @@ function detectChatLanguage(text) {
     const banglishWords = [
 
         "ami",
+        "amr",
+        "amar",
         "apni",
         "tumi",
+        "tomar",
         "vai",
         "bhai",
         "kemon",
@@ -1550,9 +1523,9 @@ function detectChatLanguage(text) {
         "korben",
         "den",
         "dao",
+        "daw",
         "dekhaw",
-        "amar",
-        "tomar",
+        "dekhai",
         "ekhane",
         "ki",
         "ke",
@@ -1561,7 +1534,17 @@ function detectChatLanguage(text) {
         "valo",
         "bhalo",
         "dhonnobad",
-        "salam"
+        "salam",
+        "keno",
+        "karon",
+        "price",
+        "dam",
+        "stock",
+        "order",
+        "nibo",
+        "nite",
+        "dib",
+        "dibo"
 
     ];
 
@@ -1619,7 +1602,7 @@ function appendAiMessage(
 
 
 /* =========================================
-   OPENROUTER AI REQUEST
+   OPENROUTER REQUEST
 ========================================= */
 
 async function getOpenRouterResponse(
@@ -1636,7 +1619,6 @@ async function getOpenRouterResponse(
 
 
     const systemPrompt = `
-
 ${TRUE_SELLER_AI_PROMPT}
 
 CURRENT USER LANGUAGE:
@@ -1645,40 +1627,28 @@ ${language}
 CURRENT PRODUCT DATA:
 ${productData}
 
-Remember:
-Product price and stock must always come from CURRENT PRODUCT DATA.
-
-Do not invent product information.
-
+IMPORTANT:
+Use the product data above as the source of truth.
+Never invent product information.
 `;
 
 
-    /*
-       Keep recent conversation only.
-       This prevents the request from
-       becoming unnecessarily large.
-    */
-
     const recentHistory =
-        geminiHistory.slice(
-            -10
-        );
+        geminiHistory.slice(-10);
 
 
     const messages = [
 
         {
             role: "system",
-            content:
-                systemPrompt
+            content: systemPrompt
         },
 
         ...recentHistory,
 
         {
             role: "user",
-            content:
-                userText
+            content: userText
         }
 
     ];
@@ -1728,36 +1698,41 @@ Do not invent product information.
         );
 
 
+    /* =====================================
+       IMPORTANT ERROR CHECK
+    ===================================== */
+
     if (!response.ok) {
 
-        let errorMessage =
-            "OpenRouter request failed.";
+        let errorText =
+            "";
 
         try {
 
-            const errorData =
-                await response.json();
-
-            console.error(
-                "OpenRouter error:",
-                errorData
-            );
-
-            errorMessage =
-                errorData?.error?.message ||
-                errorMessage;
+            errorText =
+                await response.text();
 
         } catch (error) {
 
-            console.error(
-                "OpenRouter error parsing failed:",
-                error
-            );
+            errorText =
+                "Could not read server error.";
 
         }
 
+
+        console.error(
+            "OPENROUTER STATUS:",
+            response.status
+        );
+
+        console.error(
+            "OPENROUTER ERROR:",
+            errorText
+        );
+
+
         throw new Error(
-            errorMessage
+            `HTTP ${response.status}: ${errorText}`
         );
 
     }
@@ -1768,7 +1743,7 @@ Do not invent product information.
 
 
     console.log(
-        "OpenRouter response:",
+        "OPENROUTER SUCCESS:",
         data
     );
 
@@ -1815,15 +1790,10 @@ async function handleAiChat(
 
     if (aiChatInput) {
 
-        aiChatInput.value =
-            "";
+        aiChatInput.value = "";
 
     }
 
-
-    /*
-       Temporary thinking message
-    */
 
     const thinkingMessage =
         document.createElement(
@@ -1835,6 +1805,7 @@ async function handleAiChat(
 
     thinkingMessage.textContent =
         "🤖 Thinking... 😊";
+
 
     if (aiMessages) {
 
@@ -1856,10 +1827,6 @@ async function handleAiChat(
             );
 
 
-        /*
-           Remove thinking message
-        */
-
         thinkingMessage.remove();
 
 
@@ -1868,10 +1835,6 @@ async function handleAiChat(
             "bot"
         );
 
-
-        /*
-           Save conversation
-        */
 
         geminiHistory.push({
 
@@ -1893,10 +1856,6 @@ async function handleAiChat(
         });
 
 
-        /*
-           Keep only recent messages
-        */
-
         if (
             geminiHistory.length >
             20
@@ -1909,10 +1868,11 @@ async function handleAiChat(
 
         }
 
+
     } catch (error) {
 
         console.error(
-            "True Seller AI Error:",
+            "TRUE SELLER AI ERROR:",
             error
         );
 
@@ -1920,9 +1880,16 @@ async function handleAiChat(
         thinkingMessage.remove();
 
 
+        /*
+           এবার generic message না দেখিয়ে
+           আসল error দেখাবে
+        */
+
         appendAiMessage(
 
-            "🤖 Sorry vai, ekhon AI-er sathe connection hocche na. Ektu pore abar try koren. 😔",
+            `🤖 AI connection error 😔
+
+${error?.message || "Unknown error"}`,
 
             "bot"
 
@@ -2048,28 +2015,22 @@ function initializeHybridChat() {
        ROBOT DRAG
     ===================================== */
 
-    let pointerStartX =
-        0;
+    let pointerStartX = 0;
 
-    let pointerStartY =
-        0;
+    let pointerStartY = 0;
 
-    let moved =
-        false;
+    let moved = false;
 
-    let dragging =
-        false;
+    let dragging = false;
 
 
     hybridChatButton.addEventListener(
         "pointerdown",
         event => {
 
-            dragging =
-                true;
+            dragging = true;
 
-            moved =
-                false;
+            moved = false;
 
             pointerStartX =
                 event.clientX;
@@ -2106,8 +2067,7 @@ function initializeHybridChat() {
                 ) > 8
             ) {
 
-                moved =
-                    true;
+                moved = true;
 
             }
 
@@ -2118,10 +2078,8 @@ function initializeHybridChat() {
                     Math.max(
                         8,
                         Math.min(
-                            window.innerWidth -
-                            70,
-                            event.clientX -
-                            31
+                            window.innerWidth - 70,
+                            event.clientX - 31
                         )
                     );
 
@@ -2130,10 +2088,8 @@ function initializeHybridChat() {
                     Math.max(
                         8,
                         Math.min(
-                            window.innerHeight -
-                            70,
-                            event.clientY -
-                            31
+                            window.innerHeight - 70,
+                            event.clientY - 31
                         )
                     );
 
@@ -2169,8 +2125,7 @@ function initializeHybridChat() {
 
             }
 
-            dragging =
-                false;
+            dragging = false;
 
         }
     );
@@ -2180,8 +2135,7 @@ function initializeHybridChat() {
         "pointercancel",
         () => {
 
-            dragging =
-                false;
+            dragging = false;
 
         }
     );
@@ -2353,9 +2307,3 @@ function initializeHybridChat() {
 ========================================= */
 
 initializeHybridChat();
-    
-
-                                    
-
-    
-                    
