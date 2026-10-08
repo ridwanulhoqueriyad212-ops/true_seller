@@ -36,12 +36,14 @@
             class="brand"
         >
 
-      <div class="brand-logo">
-    <img
-        src="./PLPLαႦ_Lite_2026_10_01_185821.png"
-        alt="True Seller Logo"
-    >
-</div>
+            <div class="brand-logo">
+
+                <img
+                    src="./PLPLαႦ_Lite_2026_10_01_185821.png"
+                    alt="True Seller Logo"
+                >
+
+            </div>
 
             <div class="brand-text">
 
@@ -216,6 +218,305 @@
         WhatsApp Support
     </span>
 </a>
+
+
+<!-- =========================================
+     HYBRID CHAT FLOATING BUTTON
+========================================= -->
+
+<button
+    type="button"
+    id="hybridChatButton"
+    class="hybrid-chat-button"
+    aria-label="Open True Seller Assistant"
+>
+    🤖
+</button>
+
+
+<!-- =========================================
+     HYBRID CHAT MODAL
+========================================= -->
+
+<div
+    id="hybridChatModal"
+    class="hybrid-chat-modal"
+>
+
+    <div class="hybrid-chat-content">
+
+        <button
+            type="button"
+            id="hybridChatClose"
+            class="hybrid-chat-close"
+            aria-label="Close"
+        >
+            ×
+        </button>
+
+
+        <!-- =====================================
+             CHOICE SCREEN
+        ====================================== -->
+
+        <div
+            id="chatChoiceScreen"
+            class="chat-screen active"
+        >
+
+            <div class="chat-main-icon">
+                🤖
+            </div>
+
+            <h2>
+                Welcome to True Seller!
+            </h2>
+
+            <p>
+                How can we help you?
+            </p>
+
+
+            <button
+                type="button"
+                id="openAiAssistant"
+                class="chat-choice-button"
+            >
+
+                <span class="choice-icon">
+                    🤖
+                </span>
+
+                <span class="choice-text">
+
+                    <strong>
+                        AI Assistant
+                    </strong>
+
+                    <small>
+                        Get instant product info
+                    </small>
+
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                id="openAdminHelp"
+                class="chat-choice-button"
+            >
+
+                <span class="choice-icon">
+                    👨‍💼
+                </span>
+
+                <span class="choice-text">
+
+                    <strong>
+                        Admin Help
+                    </strong>
+
+                    <small>
+                        Contact our support team
+                    </small>
+
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <!-- =====================================
+             AI ASSISTANT
+        ====================================== -->
+
+        <div
+            id="aiAssistantScreen"
+            class="chat-screen"
+        >
+
+            <div class="chat-header">
+
+                <button
+                    type="button"
+                    class="chat-back-button"
+                    data-back="choice"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <strong>
+                        True Seller AI Assistant
+                    </strong>
+
+                    <small>
+                        Product Support
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="aiMessages"
+                class="ai-messages"
+            >
+
+                <div class="ai-message bot-message">
+                    🤖 Hello! Ask me about our products, prices, or stock.
+                </div>
+
+            </div>
+
+
+            <form
+                id="aiChatForm"
+                class="ai-input-area"
+            >
+
+                <input
+                    type="text"
+                    id="aiChatInput"
+                    placeholder="Ask about a product..."
+                    autocomplete="off"
+                    required
+                >
+
+                <button
+                    type="submit"
+                    aria-label="Send"
+                >
+                    ➤
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- =====================================
+             ADMIN HELP
+        ====================================== -->
+
+        <div
+            id="adminHelpScreen"
+            class="chat-screen"
+        >
+
+            <div class="chat-header">
+
+                <button
+                    type="button"
+                    class="chat-back-button"
+                    data-back="choice"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <strong>
+                        Admin Help
+                    </strong>
+
+                    <small>
+                        True Seller Support
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-help-body">
+
+                <div class="admin-help-icon">
+                    👨‍💼
+                </div>
+
+                <p class="admin-bangla">
+                    এডমিন এর সাথে কন্টাক্ট করতে নিচে দেওয়া লিংকে ক্লিক করুন
+                </p>
+
+                <p class="admin-english">
+                    To contact the admin, please click the link below
+                </p>
+
+
+                <!-- ADMIN 1 -->
+
+                <div class="admin-contact-card">
+
+                    <strong>
+                        Admin 1
+                    </strong>
+
+                    <div class="admin-contact-links">
+
+                        <a
+                            href="https://www.facebook.com/profile.php?id=100067995472712"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            📘 Facebook
+                        </a>
+
+                        <a
+                            href="https://wa.me/8801890355650"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            💬 WhatsApp
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ADMIN 2 -->
+
+                <div class="admin-contact-card">
+
+                    <strong>
+                        Admin 2
+                    </strong>
+
+                    <div class="admin-contact-links">
+
+                        <a
+                            href="https://www.facebook.com/profile.php?id=61595295833885"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            📘 Facebook
+                        </a>
+
+                        <a
+                            href="https://wa.me/8801620922977"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            💬 WhatsApp
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <!-- =========================================
@@ -539,4 +840,4 @@
 
 </body>
 
-</html>
+            </html>
