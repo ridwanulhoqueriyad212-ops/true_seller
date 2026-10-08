@@ -11,9 +11,15 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
-/* =========================================
+/* =========================================================
+   TRUE SELLER
+   FIREBASE + PRODUCTS + ORDERS + HYBRID CHAT
+========================================================= */
+
+
+/* =========================================================
    FIREBASE CONFIG
-========================================= */
+========================================================= */
 
 const firebaseConfig = {
 
@@ -41,10 +47,6 @@ const firebaseConfig = {
 };
 
 
-/* =========================================
-   INITIALIZE
-========================================= */
-
 const app =
     initializeApp(firebaseConfig);
 
@@ -52,9 +54,9 @@ const db =
     getDatabase(app);
 
 
-/* =========================================
+/* =========================================================
    PAYMENT SETTINGS
-========================================= */
+========================================================= */
 
 const BKASH_NUMBER =
     "8801774187877";
@@ -63,209 +65,89 @@ const NAGAD_NUMBER =
     "8801717257131";
 
 const WHATSAPP_NUMBER =
-    "8801890355650";
+    "8801774187877";
 
 
-/* =========================================
-   DOM
-========================================= */
+/* =========================================================
+   DOM ELEMENTS
+========================================================= */
 
 const productGrid =
-    document.getElementById(
-        "productGrid"
-    );
+    document.getElementById("productGrid");
 
 const productCount =
-    document.getElementById(
-        "productCount"
-    );
+    document.getElementById("productCount");
 
 const emptyState =
-    document.getElementById(
-        "emptyState"
-    );
-
-
-/* SEARCH */
+    document.getElementById("emptyState");
 
 const productSearch =
-    document.getElementById(
-        "productSearch"
-    );
+    document.getElementById("productSearch");
 
 const clearSearch =
-    document.getElementById(
-        "clearSearch"
-    );
-
-
-/* ORDER */
+    document.getElementById("clearSearch");
 
 const orderModal =
-    document.getElementById(
-        "orderModal"
-    );
+    document.getElementById("orderModal");
 
 const closeModal =
-    document.getElementById(
-        "closeModal"
-    );
+    document.getElementById("closeModal");
 
 const orderForm =
-    document.getElementById(
-        "orderForm"
-    );
-
-
-/* SUCCESS */
+    document.getElementById("orderForm");
 
 const successBox =
-    document.getElementById(
-        "successBox"
-    );
+    document.getElementById("successBox");
 
 const successClose =
-    document.getElementById(
-        "successClose"
-    );
-
-
-/* WHATSAPP */
+    document.getElementById("successClose");
 
 const whatsappBtn =
-    document.getElementById(
-        "whatsappBtn"
-    );
-
-
-/* PAYMENT */
+    document.getElementById("whatsappBtn");
 
 const bkashPaymentBox =
-    document.getElementById(
-        "bkashPaymentBox"
-    );
+    document.getElementById("bkashPaymentBox");
 
 const nagadPaymentBox =
-    document.getElementById(
-        "nagadPaymentBox"
-    );
+    document.getElementById("nagadPaymentBox");
 
 const bkashNumber =
-    document.getElementById(
-        "bkashNumber"
-    );
+    document.getElementById("bkashNumber");
 
 const nagadNumber =
-    document.getElementById(
-        "nagadNumber"
-    );
+    document.getElementById("nagadNumber");
 
 const bkashTrxId =
-    document.getElementById(
-        "bkashTrxId"
-    );
+    document.getElementById("bkashTrxId");
 
 const nagadTrxId =
-    document.getElementById(
-        "nagadTrxId"
-    );
-
-
-/* SELECTED PRODUCT */
+    document.getElementById("nagadTrxId");
 
 const selectedProductId =
-    document.getElementById(
-        "selectedProductId"
-    );
+    document.getElementById("selectedProductId");
 
 const selectedProductName =
-    document.getElementById(
-        "selectedProductName"
-    );
+    document.getElementById("selectedProductName");
 
 const selectedProductPrice =
-    document.getElementById(
-        "selectedProductPrice"
-    );
+    document.getElementById("selectedProductPrice");
 
 const selectedProductImage =
-    document.getElementById(
-        "selectedProductImage"
-    );
+    document.getElementById("selectedProductImage");
 
 
-/* =========================================
-   HYBRID CHAT DOM
-========================================= */
-
-const hybridChatButton =
-    document.getElementById(
-        "hybridChatButton"
-    );
-
-const hybridChatModal =
-    document.getElementById(
-        "hybridChatModal"
-    );
-
-const hybridChatClose =
-    document.getElementById(
-        "hybridChatClose"
-    );
-
-const chatChoiceScreen =
-    document.getElementById(
-        "chatChoiceScreen"
-    );
-
-const aiAssistantScreen =
-    document.getElementById(
-        "aiAssistantScreen"
-    );
-
-const adminHelpScreen =
-    document.getElementById(
-        "adminHelpScreen"
-    );
-
-const openAiAssistant =
-    document.getElementById(
-        "openAiAssistant"
-    );
-
-const openAdminHelp =
-    document.getElementById(
-        "openAdminHelp"
-    );
-
-const aiMessages =
-    document.getElementById(
-        "aiMessages"
-    );
-
-const aiChatForm =
-    document.getElementById(
-        "aiChatForm"
-    );
-
-const aiChatInput =
-    document.getElementById(
-        "aiChatInput"
-    );
-
-
-/* =========================================
+/* =========================================================
    DATA
-========================================= */
+========================================================= */
 
 let products = {};
 
 let searchTerm = "";
 
 
-/* =========================================
+/* =========================================================
    PAYMENT NUMBERS
-========================================= */
+========================================================= */
 
 if (bkashNumber) {
 
@@ -283,9 +165,9 @@ if (nagadNumber) {
 }
 
 
-/* =========================================
-   WHATSAPP
-========================================= */
+/* =========================================================
+   WHATSAPP BUTTON
+========================================================= */
 
 if (whatsappBtn) {
 
@@ -299,9 +181,9 @@ if (whatsappBtn) {
 }
 
 
-/* =========================================
-   LOAD PRODUCTS
-========================================= */
+/* =========================================================
+   LOAD PRODUCTS FROM FIREBASE
+========================================================= */
 
 const productsRef =
     ref(
@@ -312,6 +194,7 @@ const productsRef =
 
 onValue(
     productsRef,
+
     (snapshot) => {
 
         products =
@@ -328,12 +211,14 @@ onValue(
             error
         );
 
-
         if (productGrid) {
 
             productGrid.innerHTML = `
-                <div class="empty-state"
-                     style="display:block">
+
+                <div
+                    class="empty-state"
+                    style="display:block"
+                >
 
                     <div class="empty-icon">
                         ⚠️
@@ -348,6 +233,7 @@ onValue(
                     </p>
 
                 </div>
+
             `;
 
         }
@@ -356,9 +242,9 @@ onValue(
 );
 
 
-/* =========================================
+/* =========================================================
    RENDER PRODUCTS
-========================================= */
+========================================================= */
 
 function renderProducts() {
 
@@ -381,17 +267,14 @@ function renderProducts() {
             .toLowerCase();
 
 
-    /* SEARCH FILTER */
-
     const filteredProducts =
         productEntries.filter(
             ([id, product]) => {
 
                 const name =
                     String(
-                        product.name || ""
+                        product?.name || ""
                     ).toLowerCase();
-
 
                 return name.includes(
                     search
@@ -401,8 +284,6 @@ function renderProducts() {
         );
 
 
-    /* COUNT */
-
     if (productCount) {
 
         productCount.textContent =
@@ -410,8 +291,6 @@ function renderProducts() {
 
     }
 
-
-    /* EMPTY */
 
     if (
         filteredProducts.length === 0
@@ -424,50 +303,26 @@ function renderProducts() {
 
 
             const title =
-                emptyState.querySelector(
-                    "h3"
-                );
-
+                emptyState.querySelector("h3");
 
             const text =
-                emptyState.querySelector(
-                    "p"
-                );
+                emptyState.querySelector("p");
 
 
-            if (search) {
+            if (title) {
 
-                if (title) {
+                title.textContent =
+                    "No Products Found";
 
-                    title.textContent =
-                        "No Products Found";
-
-                }
+            }
 
 
-                if (text) {
+            if (text) {
 
-                    text.textContent =
-                        `No product matches "${searchTerm}".`;
-
-                }
-
-            } else {
-
-                if (title) {
-
-                    title.textContent =
-                        "No Products Found";
-
-                }
-
-
-                if (text) {
-
-                    text.textContent =
-                        "We couldn't find any product here.";
-
-                }
+                text.textContent =
+                    search
+                        ? `No product matches "${searchTerm}".`
+                        : "We couldn't find any product here.";
 
             }
 
@@ -486,27 +341,30 @@ function renderProducts() {
     }
 
 
-    /* PRODUCT CARDS */
-
     filteredProducts.forEach(
         ([id, product]) => {
 
             const stock =
                 Number(
-                    product.stock || 0
+                    product?.stock || 0
                 );
 
 
             const price =
                 Number(
-                    product.price || 0
+                    product?.price || 0
                 );
 
 
             const image =
-                product.imageUrl ||
-                product.image ||
+                product?.imageUrl ||
+                product?.image ||
                 "";
+
+
+            const name =
+                product?.name ||
+                "Unnamed Product";
 
 
             const card =
@@ -521,17 +379,19 @@ function renderProducts() {
 
             const imageHTML =
                 image
+
                     ? `
+
                         <img
                             src="${escapeHtml(image)}"
-                            alt="${escapeHtml(
-                                product.name ||
-                                "Product"
-                            )}"
+                            alt="${escapeHtml(name)}"
                             loading="lazy"
                         >
+
                     `
+
                     : `
+
                         <div
                             style="
                                 width:100%;
@@ -545,6 +405,7 @@ function renderProducts() {
                         >
                             🛍️
                         </div>
+
                     `;
 
 
@@ -560,10 +421,7 @@ function renderProducts() {
                 <div class="product-info">
 
                     <h3>
-                        ${escapeHtml(
-                            product.name ||
-                            "Unnamed Product"
-                        )}
+                        ${escapeHtml(name)}
                     </h3>
 
 
@@ -640,9 +498,9 @@ function renderProducts() {
 }
 
 
-/* =========================================
+/* =========================================================
    SEARCH
-========================================= */
+========================================================= */
 
 if (productSearch) {
 
@@ -672,9 +530,9 @@ if (productSearch) {
 }
 
 
-/* =========================================
+/* =========================================================
    CLEAR SEARCH
-========================================= */
+========================================================= */
 
 if (clearSearch) {
 
@@ -708,9 +566,9 @@ if (clearSearch) {
 }
 
 
-/* =========================================
+/* =========================================================
    OPEN ORDER MODAL
-========================================= */
+========================================================= */
 
 function openOrderModal(
     productId,
@@ -719,7 +577,7 @@ function openOrderModal(
 
     const stock =
         Number(
-            product.stock || 0
+            product?.stock || 0
         );
 
 
@@ -733,6 +591,13 @@ function openOrderModal(
 
     }
 
+
+    /*
+       IMPORTANT:
+       Reset first.
+       Then set product ID.
+       Otherwise reset() removes the hidden product ID.
+    */
 
     if (orderForm) {
 
@@ -752,7 +617,7 @@ function openOrderModal(
     if (selectedProductName) {
 
         selectedProductName.textContent =
-            product.name ||
+            product?.name ||
             "Product";
 
     }
@@ -762,7 +627,7 @@ function openOrderModal(
 
         selectedProductPrice.textContent =
             Number(
-                product.price || 0
+                product?.price || 0
             ).toLocaleString();
 
     }
@@ -771,12 +636,12 @@ function openOrderModal(
     if (selectedProductImage) {
 
         selectedProductImage.src =
-            product.imageUrl ||
-            product.image ||
+            product?.imageUrl ||
+            product?.image ||
             "";
 
         selectedProductImage.alt =
-            product.name ||
+            product?.name ||
             "Product";
 
     }
@@ -814,9 +679,9 @@ function openOrderModal(
 }
 
 
-/* =========================================
-   CLOSE MODAL
-========================================= */
+/* =========================================================
+   CLOSE ORDER MODAL
+========================================================= */
 
 function closeOrderModal() {
 
@@ -866,9 +731,9 @@ if (orderModal) {
 }
 
 
-/* =========================================
-   PAYMENT CHANGE
-========================================= */
+/* =========================================================
+   PAYMENT METHOD
+========================================================= */
 
 document
     .querySelectorAll(
@@ -943,9 +808,9 @@ function hidePaymentBoxes() {
 }
 
 
-/* =========================================
+/* =========================================================
    ORDER SUBMIT
-========================================= */
+========================================================= */
 
 if (orderForm) {
 
@@ -996,31 +861,40 @@ if (orderForm) {
             }
 
 
+            const nameElement =
+                document.getElementById(
+                    "customerName"
+                );
+
+
+            const phoneElement =
+                document.getElementById(
+                    "customerPhone"
+                );
+
+
+            const addressElement =
+                document.getElementById(
+                    "customerAddress"
+                );
+
+
             const customerName =
-                document
-                    .getElementById(
-                        "customerName"
-                    )
-                    .value
-                    .trim();
+                nameElement
+                    ? nameElement.value.trim()
+                    : "";
 
 
             const phone =
-                document
-                    .getElementById(
-                        "customerPhone"
-                    )
-                    .value
-                    .trim();
+                phoneElement
+                    ? phoneElement.value.trim()
+                    : "";
 
 
             const address =
-                document
-                    .getElementById(
-                        "customerAddress"
-                    )
-                    .value
-                    .trim();
+                addressElement
+                    ? addressElement.value.trim()
+                    : "";
 
 
             const paymentMethod =
@@ -1073,11 +947,13 @@ if (orderForm) {
                         "Please enter your bKash TrxID."
                     );
 
+
                     if (bkashTrxId) {
 
                         bkashTrxId.focus();
 
                     }
+
 
                     return;
 
@@ -1107,11 +983,13 @@ if (orderForm) {
                         "Please enter your Nagad TrxID."
                     );
 
+
                     if (nagadTrxId) {
 
                         nagadTrxId.focus();
 
                     }
+
 
                     return;
 
@@ -1172,8 +1050,7 @@ if (orderForm) {
 
                     price:
                         Number(
-                            product.price ||
-                            0
+                            product.price || 0
                         ),
 
                     customerName:
@@ -1259,9 +1136,9 @@ if (orderForm) {
 }
 
 
-/* =========================================
+/* =========================================================
    SUCCESS CLOSE
-========================================= */
+========================================================= */
 
 if (successClose) {
 
@@ -1306,1082 +1183,9 @@ if (successBox) {
 }
 
 
-/* =========================================
-   TRUE SELLER HYBRID CHAT
-========================================= */
-
-
-/* -----------------------------------------
-   OPEN / CLOSE CHAT
------------------------------------------ */
-
-function openHybridChat() {
-
-    if (!hybridChatModal) return;
-
-    hybridChatModal.classList.add(
-        "active"
-    );
-
-    document.body.style.overflow =
-        "hidden";
-
-}
-
-
-function closeHybridChat() {
-
-    if (!hybridChatModal) return;
-
-    hybridChatModal.classList.remove(
-        "active"
-    );
-
-    document.body.style.overflow =
-        "";
-
-}
-
-
-if (hybridChatButton) {
-
-    hybridChatButton.addEventListener(
-        "click",
-        openHybridChat
-    );
-
-}
-
-
-if (hybridChatClose) {
-
-    hybridChatClose.addEventListener(
-        "click",
-        closeHybridChat
-    );
-
-}
-
-
-if (hybridChatModal) {
-
-    hybridChatModal.addEventListener(
-        "click",
-        (event) => {
-
-            if (
-                event.target ===
-                hybridChatModal
-            ) {
-
-                closeHybridChat();
-
-            }
-
-        }
-    );
-
-}
-
-
-/* -----------------------------------------
-   CHAT SCREEN SWITCHING
------------------------------------------ */
-
-function showChatScreen(
-    screen
-) {
-
-    if (chatChoiceScreen) {
-
-        chatChoiceScreen.classList.remove(
-            "active"
-        );
-
-    }
-
-
-    if (aiAssistantScreen) {
-
-        aiAssistantScreen.classList.remove(
-            "active"
-        );
-
-    }
-
-
-    if (adminHelpScreen) {
-
-        adminHelpScreen.classList.remove(
-            "active"
-        );
-
-    }
-
-
-    if (screen === "choice") {
-
-        if (chatChoiceScreen) {
-
-            chatChoiceScreen.classList.add(
-                "active"
-            );
-
-        }
-
-    }
-
-
-    if (screen === "ai") {
-
-        if (aiAssistantScreen) {
-
-            aiAssistantScreen.classList.add(
-                "active"
-            );
-
-        }
-
-    }
-
-
-    if (screen === "admin") {
-
-        if (adminHelpScreen) {
-
-            adminHelpScreen.classList.add(
-                "active"
-            );
-
-        }
-
-    }
-
-}
-
-
-/* -----------------------------------------
-   AI BUTTON
------------------------------------------ */
-
-if (openAiAssistant) {
-
-    openAiAssistant.addEventListener(
-        "click",
-        () => {
-
-            showChatScreen(
-                "ai"
-            );
-
-
-            setTimeout(
-                () => {
-
-                    if (aiChatInput) {
-
-                        aiChatInput.focus();
-
-                    }
-
-                },
-                100
-            );
-
-        }
-    );
-
-}
-
-
-/* -----------------------------------------
-   ADMIN BUTTON
------------------------------------------ */
-
-if (openAdminHelp) {
-
-    openAdminHelp.addEventListener(
-        "click",
-        () => {
-
-            showChatScreen(
-                "admin"
-            );
-
-        }
-    );
-
-}
-
-
-/* -----------------------------------------
-   BACK BUTTONS
------------------------------------------ */
-
-document
-    .querySelectorAll(
-        ".chat-back-button"
-    )
-    .forEach(
-        (button) => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    showChatScreen(
-                        "choice"
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-/* -----------------------------------------
-   AI MESSAGE
------------------------------------------ */
-
-function addAiMessage(
-    text,
-    type
-) {
-
-    if (!aiMessages) return;
-
-
-    const message =
-        document.createElement(
-            "div"
-        );
-
-
-    message.className =
-        `ai-message ${
-            type === "user"
-                ? "user-message"
-                : "bot-message"
-        }`;
-
-
-    message.textContent =
-        text;
-
-
-    aiMessages.appendChild(
-        message
-    );
-
-
-    aiMessages.scrollTop =
-        aiMessages.scrollHeight;
-
-}
-
-
-/* -----------------------------------------
-   LANGUAGE DETECTION
------------------------------------------ */
-
-function detectChatLanguage(
-    text
-) {
-
-    const value =
-        String(text || "").trim();
-
-
-    if (/[\u0980-\u09FF]/.test(value)) {
-
-        return "bangla";
-
-    }
-
-
-    const lower =
-        value.toLowerCase();
-
-
-    const banglishWords = [
-        "ki",
-        "koto",
-        "ase",
-        "ache",
-        "nai",
-        "daam",
-        "dam",
-        "price",
-        "stock",
-        "pabo",
-        "nibo",
-        "niben",
-        "chai",
-        "lagbe",
-        "apnader",
-        "product",
-        "kemon"
-    ];
-
-
-    const hasBanglish =
-        banglishWords.some(
-            (word) =>
-                lower.includes(
-                    word
-                )
-        );
-
-
-    if (hasBanglish) {
-
-        return "banglish";
-
-    }
-
-
-    return "english";
-
-}
-
-
-/* -----------------------------------------
-   FIND PRODUCT
------------------------------------------ */
-
-function findChatProduct(
-    text
-) {
-
-    const value =
-        String(text || "")
-            .toLowerCase()
-            .trim();
-
-
-    const entries =
-        Object.entries(
-            products || {}
-        );
-
-
-    if (!entries.length) {
-
-        return null;
-
-    }
-
-
-    /* EXACT / PARTIAL NAME */
-
-    let match =
-        entries.find(
-            ([id, product]) => {
-
-                const name =
-                    String(
-                        product.name || ""
-                    ).toLowerCase();
-
-
-                return (
-                    value.includes(name) ||
-                    name.includes(value)
-                );
-
-            }
-        );
-
-
-    if (match) {
-
-        return match;
-
-    }
-
-
-    /* WORD MATCH */
-
-    const words =
-        value
-            .split(
-                /\s+/
-            )
-            .filter(
-                (word) =>
-                    word.length >= 3
-            );
-
-
-    let bestProduct =
-        null;
-
-    let bestScore =
-        0;
-
-
-    entries.forEach(
-        ([id, product]) => {
-
-            const name =
-                String(
-                    product.name || ""
-                ).toLowerCase();
-
-
-            let score =
-                0;
-
-
-            words.forEach(
-                (word) => {
-
-                    if (
-                        name.includes(
-                            word
-                        )
-                    ) {
-
-                        score++;
-
-                    }
-
-                }
-            );
-
-
-            if (
-                score > bestScore
-            ) {
-
-                bestScore =
-                    score;
-
-                bestProduct =
-                    [id, product];
-
-            }
-
-        }
-    );
-
-
-    return bestProduct;
-
-}
-
-
-/* -----------------------------------------
-   PRODUCT RESPONSE
------------------------------------------ */
-
-function createProductResponse(
-    productEntry,
-    language
-) {
-
-    if (!productEntry) {
-
-        if (
-            language ===
-            "bangla"
-        ) {
-
-            return "🤖 দুঃখিত, এই নামে কোনো product খুঁজে পেলাম না। 🛍️";
-
-        }
-
-
-        if (
-            language ===
-            "banglish"
-        ) {
-
-            return "🤖 Sorry vai, ei name kono product khuje pelam na. 🛍️";
-
-        }
-
-
-        return "🤖 Sorry, I couldn't find that product. 🛍️";
-
-    }
-
-
-    const product =
-        productEntry[1];
-
-
-    const name =
-        String(
-            product.name ||
-            "Product"
-        );
-
-
-    const price =
-        Number(
-            product.price || 0
-        );
-
-
-    const stock =
-        Number(
-            product.stock || 0
-        );
-
-
-    if (
-        language ===
-        "bangla"
-    ) {
-
-        if (stock > 0) {
-
-            return (
-                `🛍️ ${name} 🔥\n` +
-                `💰 দাম: ${price.toLocaleString()}৳ 🙃\n` +
-                `📦 স্টক: ${stock} pcs ✅`
-            );
-
-        }
-
-
-        return (
-            `🛍️ ${name} 🔥\n` +
-            `💰 দাম: ${price.toLocaleString()}৳ 🙃\n` +
-            `📦 স্টক: বর্তমানে শেষ 😔`
-        );
-
-    }
-
-
-    if (
-        language ===
-        "banglish"
-    ) {
-
-        if (stock > 0) {
-
-            return (
-                `🛍️ ${name} 🔥\n` +
-                `💰 Price: ${price.toLocaleString()}৳ 🙃\n` +
-                `📦 Stock: ${stock} pcs ache ✅`
-            );
-
-        }
-
-
-        return (
-            `🛍️ ${name} 🔥\n` +
-            `💰 Price: ${price.toLocaleString()}৳ 🙃\n` +
-            `📦 Stock: ekhon shesh 😔`
-        );
-
-    }
-
-
-    if (stock > 0) {
-
-        return (
-            `🛍️ ${name} 🔥\n` +
-            `💰 Price: ${price.toLocaleString()}৳ 🙃\n` +
-            `📦 Stock: ${stock} pcs available ✅`
-        );
-
-    }
-
-
-    return (
-        `🛍️ ${name} 🔥\n` +
-        `💰 Price: ${price.toLocaleString()}৳ 🙃\n` +
-        `📦 Stock: Currently out of stock 😔`
-    );
-
-}
-
-
-/* -----------------------------------------
-   GENERAL AI RESPONSE
------------------------------------------ */
-
-function getAiResponse(
-    userText
-) {
-
-    const language =
-        detectChatLanguage(
-            userText
-        );
-
-
-    const lower =
-        String(userText || "")
-            .toLowerCase();
-
-
-    const product =
-        findChatProduct(
-            userText
-        );
-
-
-    /* PRODUCT QUERY */
-
-    const productKeywords = [
-        "product",
-        "price",
-        "stock",
-        "available",
-        "available?",
-        "dam",
-        "daam",
-        "koto",
-        "ache",
-        "ase",
-        "nai",
-        "pabo",
-        "product ki",
-        "product name"
-    ];
-
-
-    const asksAboutProduct =
-        productKeywords.some(
-            (keyword) =>
-                lower.includes(
-                    keyword
-                )
-        );
-
-
-    if (
-        product ||
-        asksAboutProduct
-    ) {
-
-        if (product) {
-
-            return createProductResponse(
-                product,
-                language
-            );
-
-        }
-
-
-        if (
-            language ===
-            "bangla"
-        ) {
-
-            return "🤖 অবশ্যই! কোন product-এর নাম বলুন, আমি তার price ও stock জানিয়ে দিচ্ছি। 🛍️";
-
-        }
-
-
-        if (
-            language ===
-            "banglish"
-        ) {
-
-            return "🤖 Obosshoi! Product-er name bolen, ami price ar stock bole dibo. 🛍️";
-
-        }
-
-
-        return "🤖 Sure! Tell me the product name and I can show you its price and stock. 🛍️";
-
-    }
-
-
-    /* GREETING */
-
-    const greetingWords = [
-        "hi",
-        "hello",
-        "hey",
-        "salam",
-        "assalamu",
-        "আসসালামু",
-        "হাই",
-        "হ্যালো"
-    ];
-
-
-    const isGreeting =
-        greetingWords.some(
-            (word) =>
-                lower.includes(
-                    word
-                )
-        );
-
-
-    if (isGreeting) {
-
-        if (
-            language ===
-            "bangla"
-        ) {
-
-            return "🤖 আসসালামু আলাইকুম! True Seller-এ স্বাগতম। 🛍️ কোন product সম্পর্কে জানতে চান?";
-
-        }
-
-
-        if (
-            language ===
-            "banglish"
-        ) {
-
-            return "🤖 Assalamu Alaikum! True Seller-e welcome. 🛍️ Kon product somporke jante chan?";
-
-        }
-
-
-        return "🤖 Hello! Welcome to True Seller. 🛍️ Which product would you like to know about?";
-
-    }
-
-
-    /* THANK YOU */
-
-    if (
-        lower.includes("thanks") ||
-        lower.includes("thank you") ||
-        lower.includes("ধন্যবাদ")
-    ) {
-
-        if (
-            language ===
-            "bangla"
-        ) {
-
-            return "🤖 আপনাকেও ধন্যবাদ! True Seller-এর সাথে থাকার জন্য। ❤️";
-
-        }
-
-
-        if (
-            language ===
-            "banglish"
-        ) {
-
-            return "🤖 Apnakeo thanks! True Seller-er sathe thakar jonno. ❤️";
-
-        }
-
-
-        return "🤖 You're welcome! Thanks for choosing True Seller. ❤️";
-
-    }
-
-
-    /* FALLBACK */
-
-    if (
-        language ===
-        "bangla"
-    ) {
-
-        return "🤖 আপনার প্রশ্নটা হয়তো আমি বুঝিনি। 🛍️ Product-এর নাম, price বা stock সম্পর্কে জিজ্ঞেস করতে পারেন।";
-
-    }
-
-
-    if (
-        language ===
-        "banglish"
-    ) {
-
-        return "🤖 Apnar question-ta hoyto bujhte pari nai. 🛍️ Product-er name, price ba stock niye jiggesh korte paren.";
-
-    }
-
-
-    return "🤖 I may not have understood your question. 🛍️ You can ask me about a product, price, or stock.";
-
-}
-
-
-/* -----------------------------------------
-   AI CHAT SUBMIT
------------------------------------------ */
-
-if (aiChatForm) {
-
-    aiChatForm.addEventListener(
-        "submit",
-        (event) => {
-
-            event.preventDefault();
-
-
-            const text =
-                aiChatInput
-                    ? aiChatInput.value.trim()
-                    : "";
-
-
-            if (!text) return;
-
-
-            addAiMessage(
-                text,
-                "user"
-            );
-
-
-            if (aiChatInput) {
-
-                aiChatInput.value =
-                    "";
-
-            }
-
-
-            setTimeout(
-                () => {
-
-                    const response =
-                        getAiResponse(
-                            text
-                        );
-
-
-                    addAiMessage(
-                        response,
-                        "bot"
-                    );
-
-                },
-                250
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================
-   DRAGGABLE ROBOT BUTTON
-========================================= */
-
-let chatDragging =
-    false;
-
-let chatMoved =
-    false;
-
-let chatStartX =
-    0;
-
-let chatStartY =
-    0;
-
-let chatOriginalX =
-    0;
-
-let chatOriginalY =
-    0;
-
-
-if (hybridChatButton) {
-
-    hybridChatButton.addEventListener(
-        "pointerdown",
-        (event) => {
-
-            chatDragging =
-                true;
-
-            chatMoved =
-                false;
-
-
-            const rect =
-                hybridChatButton.getBoundingClientRect();
-
-
-            chatStartX =
-                event.clientX;
-
-            chatStartY =
-                event.clientY;
-
-
-            chatOriginalX =
-                rect.left;
-
-            chatOriginalY =
-                rect.top;
-
-
-            hybridChatButton.style.left =
-                `${chatOriginalX}px`;
-
-            hybridChatButton.style.top =
-                `${chatOriginalY}px`;
-
-            hybridChatButton.style.right =
-                "auto";
-
-            hybridChatButton.style.bottom =
-                "auto";
-
-
-            try {
-
-                hybridChatButton.setPointerCapture(
-                    event.pointerId
-                );
-
-            } catch (error) {
-
-                console.log(
-                    "Pointer capture unavailable."
-                );
-
-            }
-
-        }
-    );
-
-
-    hybridChatButton.addEventListener(
-        "pointermove",
-        (event) => {
-
-            if (!chatDragging) return;
-
-
-            const deltaX =
-                event.clientX -
-                chatStartX;
-
-
-            const deltaY =
-                event.clientY -
-                chatStartY;
-
-
-            if (
-                Math.abs(deltaX) > 5 ||
-                Math.abs(deltaY) > 5
-            ) {
-
-                chatMoved =
-                    true;
-
-            }
-
-
-            let newX =
-                chatOriginalX +
-                deltaX;
-
-
-            let newY =
-                chatOriginalY +
-                deltaY;
-
-
-            const maxX =
-                window.innerWidth -
-                hybridChatButton.offsetWidth -
-                5;
-
-
-            const maxY =
-                window.innerHeight -
-                hybridChatButton.offsetHeight -
-                5;
-
-
-            newX =
-                Math.max(
-                    5,
-                    Math.min(
-                        newX,
-                        maxX
-                    )
-                );
-
-
-            newY =
-                Math.max(
-                    5,
-                    Math.min(
-                        newY,
-                        maxY
-                    )
-                );
-
-
-            hybridChatButton.style.left =
-                `${newX}px`;
-
-            hybridChatButton.style.top =
-                `${newY}px`;
-
-        }
-    );
-
-
-    hybridChatButton.addEventListener(
-        "pointerup",
-        (event) => {
-
-            if (!chatDragging) return;
-
-
-            chatDragging =
-                false;
-
-
-            try {
-
-                hybridChatButton.releasePointerCapture(
-                    event.pointerId
-                );
-
-            } catch (error) {
-
-                console.log(
-                    "Pointer release unavailable."
-                );
-
-            }
-
-
-            if (!chatMoved) {
-
-                openHybridChat();
-
-            }
-
-        }
-    );
-
-
-    hybridChatButton.addEventListener(
-        "pointercancel",
-        () => {
-
-            chatDragging =
-                false;
-
-        }
-    );
-
-}
-
-
-/* =========================================
+/* =========================================================
    ESCAPE HTML
-========================================= */
+========================================================= */
 
 function escapeHtml(value) {
 
@@ -2409,4 +1213,2366 @@ function escapeHtml(value) {
             "&#039;"
         );
 
+}
+
+
+/* =========================================================
+   HYBRID CHAT
+========================================================= */
+
+const hybridChatButton =
+    document.getElementById(
+        "hybridChatButton"
+    );
+
+const hybridChatModal =
+    document.getElementById(
+        "hybridChatModal"
+    );
+
+const hybridChatClose =
+    document.getElementById(
+        "hybridChatClose"
+    );
+
+const chatChoiceScreen =
+    document.getElementById(
+        "chatChoiceScreen"
+    );
+
+const aiAssistantScreen =
+    document.getElementById(
+        "aiAssistantScreen"
+    );
+
+const adminHelpScreen =
+    document.getElementById(
+        "adminHelpScreen"
+    );
+
+const openAiAssistant =
+    document.getElementById(
+        "openAiAssistant"
+    );
+
+const openAdminHelp =
+    document.getElementById(
+        "openAdminHelp"
+    );
+
+const aiMessages =
+    document.getElementById(
+        "aiMessages"
+    );
+
+const aiChatForm =
+    document.getElementById(
+        "aiChatForm"
+    );
+
+const aiChatInput =
+    document.getElementById(
+        "aiChatInput"
+    );
+
+
+let lastChatProductId =
+    null;
+
+let lastChatProduct =
+    null;
+
+
+/* =========================================================
+   BUSINESS KNOWLEDGE
+========================================================= */
+
+const TRUE_SELLER_KNOWLEDGE = {
+
+    owner: {
+
+        bn:
+            "👤 True Seller-এর owner হলেন Touhid Shawon এবং Ridwanul Hoque Riyad। 🤝",
+
+        en:
+            "👤 The owners of True Seller are Touhid Shawon and Ridwanul Hoque Riyad. 🤝",
+
+        bi:
+            "👤 True Seller-er owner holen Touhid Shawon ebong Ridwanul Hoque Riyad. 🤝"
+
+    },
+
+
+    developer: {
+
+        bn:
+            "💻 True Seller website-এর developer হলেন Ridwanul Hoque Riyad। 🤝",
+
+        en:
+            "💻 The developer of the True Seller website is Ridwanul Hoque Riyad. 🤝",
+
+        bi:
+            "💻 True Seller website-er developer holen Ridwanul Hoque Riyad. 🤝"
+
+    },
+
+
+    facebook: {
+
+        bn:
+            "📘 আমাদের Facebook Page-এর নাম True Seller। 😊",
+
+        en:
+            "📘 Our Facebook Page name is True Seller. 😊",
+
+        bi:
+            "📘 Amader Facebook Page-er naam True Seller. 😊"
+
+    },
+
+
+    whatsapp: {
+
+        bn:
+            "📱 Website-এর WhatsApp button-এ click করলেই WhatsApp-এ যোগাযোগ করতে পারবেন। 😊",
+
+        en:
+            "📱 You can contact us by clicking the WhatsApp button on the website. 😊",
+
+        bi:
+            "📱 Website-er WhatsApp button-e click korlei WhatsApp-e jogajog korte parben. 😊"
+
+    },
+
+
+    delivery: {
+
+        bn:
+            "🚚 True Seller-এর delivery সাধারণত 3 দিনের মধ্যে হয়। 😊",
+
+        en:
+            "🚚 True Seller delivery usually takes 3 days. 😊",
+
+        bi:
+            "🚚 True Seller-er delivery usually 3 diner moddhe hoy. 😊"
+
+    },
+
+
+    payment: {
+
+        bn:
+            "💳 আমরা bKash, Nagad এবং Cash on Delivery (COD) payment গ্রহণ করি। 😊",
+
+        en:
+            "💳 We accept bKash, Nagad, and Cash on Delivery (COD). 😊",
+
+        bi:
+            "💳 Amra bKash, Nagad ebong Cash on Delivery (COD) payment nei. 😊"
+
+    },
+
+
+    identity: {
+
+        bn:
+            "🤖 আমি True Seller-এর AI Assistant। Product, price, stock, order এবং True Seller সম্পর্কে তথ্য দিতে পারি। 😊",
+
+        en:
+            "🤖 I am the True Seller AI Assistant. I can help with products, prices, stock, orders, and True Seller information. 😊",
+
+        bi:
+            "🤖 Ami True Seller-er AI Assistant. Product, price, stock, order ebong True Seller-er information dite pari. 😊"
+
+    },
+
+
+    thanks: {
+
+        bn:
+            "😊 আপনাকেও ধন্যবাদ! True Seller-এ আপনাকে সাহায্য করতে পেরে ভালো লাগছে। 🤝",
+
+        en:
+            "😊 You're welcome! I'm happy to help you at True Seller. 🤝",
+
+        bi:
+            "😊 Apnakeo dhonnobad! True Seller-e apnake help korte pere valo lagche. 🤝"
+
+    },
+
+
+    fallback: {
+
+        bn:
+            "🤖 দুঃখিত, প্রশ্নটি পুরোপুরি বুঝতে পারিনি। একটু অন্যভাবে লিখুন অথবা Admin Help ব্যবহার করুন। 😊",
+
+        en:
+            "🤖 Sorry, I couldn't fully understand your question. Please try another way or use Admin Help. 😊",
+
+        bi:
+            "🤖 Sorry, apnar question-ta puro bujhte parini. Ektu onno vabe likhun ba Admin Help use korun. 😊"
+
     }
+
+};
+
+
+/* =========================================================
+   FAQ INTENTS
+========================================================= */
+
+const FAQ_INTENTS = [
+
+    {
+        id: "owner",
+
+        words: [
+            "owner",
+            "owners",
+            "owener",
+            "onwer",
+            "ownr",
+            "owner ke",
+            "owners ke",
+            "malik",
+            "malik ke",
+            "proprietor",
+            "propritor",
+            "proprietar",
+            "boss",
+            "boss ke",
+            "main owner",
+            "main malik",
+            "true seller owner",
+            "true seller er owner",
+            "trueseller owner",
+            "মালিক",
+            "মালিক কে",
+            "ওনার",
+            "ওনার কে",
+            "স্বত্বাধিকারী",
+            "স্বত্বাধিকারী কে"
+        ],
+
+        answer:
+            "owner"
+    },
+
+
+    {
+        id: "developer",
+
+        words: [
+            "developer",
+            "developar",
+            "devoloper",
+            "devloper",
+            "developper",
+            "developr",
+            "dev",
+            "devloper ke",
+            "developer ke",
+            "website developer",
+            "site developer",
+            "web developer",
+            "website ke banay",
+            "website banay ke",
+            "site ke banay",
+            "website maker",
+            "site maker",
+            "website banaise ke",
+            "website banayse ke",
+            "web banaise ke",
+            "ডেভেলপার",
+            "ডেভেলপার কে",
+            "ওয়েব ডেভেলপার",
+            "সাইট কে বানিয়েছে"
+        ],
+
+        answer:
+            "developer"
+    },
+
+
+    {
+        id: "facebook",
+
+        words: [
+            "facebook",
+            "facebok",
+            "facbook",
+            "facbok",
+            "facebook page",
+            "facebook name",
+            "page name",
+            "fb",
+            "fb page",
+            "fbook",
+            "face book",
+            "facebook link",
+            "fb link",
+            "page",
+            "page ta ki",
+            "page nam",
+            "page naam",
+            "true seller facebook",
+            "trueseller facebook",
+            "ফেসবুক",
+            "ফেসবুক পেজ",
+            "ফেসবুক পেজের নাম",
+            "পেজ",
+            "পেজের নাম"
+        ],
+
+        answer:
+            "facebook"
+    },
+
+
+    {
+        id: "whatsapp",
+
+        words: [
+            "whatsapp",
+            "whatsap",
+            "watsapp",
+            "whtsapp",
+            "whatsupp",
+            "whats app",
+            "whatsappp",
+            "whtsap",
+            "whatapp",
+            "whatsap link",
+            "whatsapp link",
+            "whatsapp number",
+            "whats number",
+            "whatsapp contact",
+            "whats contact",
+            "whatsap contact",
+            "whatsapp e jogajog",
+            "whatsapp jogajog",
+            "whatsapp e kotha",
+            "whatsapp e kivabe",
+            "whatsapp kivabe",
+            "whatsapp kothay",
+            "হোয়াটসঅ্যাপ",
+            "হোয়াটসাপ",
+            "হোয়াটসঅ্যাপ নাম্বার",
+            "হোয়াটসঅ্যাপে যোগাযোগ"
+        ],
+
+        answer:
+            "whatsapp"
+    },
+
+
+    {
+        id: "delivery",
+
+        words: [
+            "delivery",
+            "delivary",
+            "delivry",
+            "delvery",
+            "delevary",
+            "delivri",
+            "delivrey",
+            "deliveri",
+            "delivaryy",
+            "delivryy",
+            "delivary charge",
+            "delivery charge",
+            "delivery fee",
+            "delivary fee",
+            "delivery time",
+            "delivary time",
+            "deliveri time",
+            "delivery koydin",
+            "delivary koydin",
+            "delivry koydin",
+            "delivery koto din",
+            "delivary koto din",
+            "delivery kotodin",
+            "delivery how many days",
+            "delivery how long",
+            "delivery kobe",
+            "ডেলিভারি",
+            "ডেলিভারি চার্জ",
+            "ডেলিভারি কতদিন",
+            "ডেলিভারি কবে"
+        ],
+
+        answer:
+            "delivery"
+    },
+
+
+    {
+        id: "payment",
+
+        words: [
+            "payment",
+            "pament",
+            "paymant",
+            "paymnt",
+            "payement",
+            "paymet",
+            "paymen",
+            "payment method",
+            "pament method",
+            "payment kibhabe",
+            "payment kivabe",
+            "payment ki ki",
+            "payment option",
+            "pay option",
+            "pay kibhabe",
+            "pay kivabe",
+            "bkash",
+            "bkas",
+            "bkashh",
+            "b kash",
+            "bkash payment",
+            "nagad",
+            "nagod",
+            "nagadd",
+            "nagad payment",
+            "cod",
+            "c o d",
+            "cash on delivery",
+            "cash delivery",
+            "পেমেন্ট",
+            "পেমেন্ট কিভাবে",
+            "বিকাশ",
+            "নগদ",
+            "ক্যাশ অন ডেলিভারি"
+        ],
+
+        answer:
+            "payment"
+    },
+
+
+    {
+        id: "identity",
+
+        words: [
+            "who are you",
+            "who r you",
+            "who r u",
+            "what are you",
+            "what r you",
+            "what r u",
+            "tomar nam",
+            "tumar nam",
+            "tomar naam",
+            "tumar naam",
+            "tomar name",
+            "tumar name",
+            "ke tumi",
+            "k tumi",
+            "tumi ke",
+            "apni ke",
+            "who you",
+            "your name",
+            "ur name",
+            "name ki",
+            "name bolo",
+            "bot name",
+            "ai name",
+            "আপনি কে",
+            "তুমি কে",
+            "তোমার নাম",
+            "তোমার নাম কি",
+            "নাম কি",
+            "নাম বলো"
+        ],
+
+        answer:
+            "identity"
+    },
+
+
+    {
+        id: "thanks",
+
+        words: [
+            "thanks",
+            "thank you",
+            "thnx",
+            "thanx",
+            "tanks",
+            "thankyou",
+            "thank u",
+            "thnku",
+            "thnks",
+            "thankss",
+            "thanks bro",
+            "thanks vai",
+            "tnx",
+            "tnks",
+            "dhonnobad",
+            "donnobad",
+            "dhonnobad vai",
+            "অনেক ধন্যবাদ",
+            "ধন্যবাদ",
+            "থ্যাংকস"
+        ],
+
+        answer:
+            "thanks"
+    }
+
+];
+
+
+/* =========================================================
+   GREETING
+========================================================= */
+
+const GREETING_INTENTS = [
+
+    "hi",
+    "hii",
+    "hiii",
+    "hiiii",
+    "hello",
+    "helo",
+    "hellow",
+    "heello",
+    "hey",
+    "heyy",
+    "hy",
+    "hyy",
+    "salam",
+    "slm",
+    "salamualaikum",
+    "assalamualaikum",
+    "assalamu alaikum",
+    "asalamualaikum",
+    "aslamualaikum",
+    "assalamu alaykum",
+    "আসসালামু আলাইকুম",
+    "সালাম",
+    "হাই",
+    "হ্যালো",
+    "হ্যালো ভাই"
+];
+
+
+const HOW_ARE_YOU_INTENTS = [
+
+    "kemon aso",
+    "kemon acho",
+    "kmn aso",
+    "kmn acho",
+    "kmon aso",
+    "kmon acho",
+    "kemon asen",
+    "kemon achen",
+    "kmn achen",
+    "kemon as",
+    "kmon as",
+    "how are you",
+    "how r you",
+    "how are u",
+    "how r u",
+    "hows you",
+    "are you good",
+    "you good",
+    "valo acho",
+    "bhalo acho",
+    "ভালো আছো",
+    "কেমন আছো",
+    "কেমন আছেন",
+    "কেমন আছ",
+    "কেমন আছিস"
+];
+
+
+const WHAT_DO_YOU_DO_INTENTS = [
+
+    "ki koro",
+    "ki koros",
+    "ki koren",
+    "tumi ki koro",
+    "apni ki koren",
+    "what do you do",
+    "what u do",
+    "wht do u do",
+    "ki kaj koro",
+    "ki kaj koren",
+    "tumar kaj ki",
+    "tomar kaj ki",
+    "bot ki kore",
+    "ai ki kore",
+    "কি করো",
+    "কি করেন",
+    "কি কাজ করো",
+    "তুমি কি করো"
+];
+
+
+/* =========================================================
+   NORMALIZE
+========================================================= */
+
+function normalizeChatText(
+    value
+) {
+
+    return String(
+        value || ""
+    )
+        .toLowerCase()
+        .normalize("NFKC")
+        .replace(
+            /[؟?!.。,،;:|/\\()[\]{}<>_+=*#@%$^&~`'"“”‘’]/g,
+            " "
+        )
+        .replace(
+            /[০-৯]/g,
+            (digit) =>
+                String(
+                    "০১২৩৪৫৬৭৮৯"
+                        .indexOf(digit)
+                )
+        )
+        .replace(
+            /\s+/g,
+            " "
+        )
+        .trim();
+
+}
+
+
+function compactChatText(
+    value
+) {
+
+    return normalizeChatText(
+        value
+    ).replace(
+        /\s+/g,
+        ""
+    );
+
+}
+
+
+/* =========================================================
+   LEVENSHTEIN FUZZY MATCH
+========================================================= */
+
+function levenshtein(
+    a,
+    b
+) {
+
+    if (a === b) return 0;
+
+    if (!a) return b.length;
+
+    if (!b) return a.length;
+
+
+    const previous =
+        Array.from(
+            {
+                length:
+                    b.length + 1
+            },
+            (_, i) => i
+        );
+
+
+    for (
+        let i = 1;
+        i <= a.length;
+        i++
+    ) {
+
+        const current =
+            [i];
+
+
+        for (
+            let j = 1;
+            j <= b.length;
+            j++
+        ) {
+
+            current[j] =
+                Math.min(
+
+                    current[j - 1] + 1,
+
+                    previous[j] + 1,
+
+                    previous[j - 1] +
+                    (
+                        a[i - 1] ===
+                        b[j - 1]
+                            ? 0
+                            : 1
+                    )
+
+                );
+
+        }
+
+
+        for (
+            let j = 0;
+            j < current.length;
+            j++
+        ) {
+
+            previous[j] =
+                current[j];
+
+        }
+
+    }
+
+
+    return previous[b.length];
+
+}
+
+
+/* =========================================================
+   FUZZY TOKEN
+========================================================= */
+
+function fuzzyTokenMatch(
+    inputToken,
+    alias
+) {
+
+    const a =
+        compactChatText(
+            inputToken
+        );
+
+    const b =
+        compactChatText(
+            alias
+        );
+
+
+    if (!a || !b) {
+
+        return false;
+
+    }
+
+
+    if (a === b) {
+
+        return true;
+
+    }
+
+
+    if (
+        a.includes(b) ||
+        b.includes(a)
+    ) {
+
+        return true;
+
+    }
+
+
+    const maxLength =
+        Math.max(
+            a.length,
+            b.length
+        );
+
+
+    if (maxLength <= 4) {
+
+        return levenshtein(
+            a,
+            b
+        ) <= 1;
+
+    }
+
+
+    if (maxLength <= 7) {
+
+        return levenshtein(
+            a,
+            b
+        ) <= 2;
+
+    }
+
+
+    return levenshtein(
+        a,
+        b
+    ) <= 3;
+
+}
+
+
+/* =========================================================
+   INTENT MATCH
+========================================================= */
+
+function textHasIntent(
+    text,
+    aliases
+) {
+
+    const normalized =
+        normalizeChatText(
+            text
+        );
+
+
+    const tokens =
+        normalized
+            .split(" ")
+            .filter(Boolean);
+
+
+    for (
+        const alias of aliases
+    ) {
+
+        const a =
+            normalizeChatText(
+                alias
+            );
+
+
+        if (!a) continue;
+
+
+        if (
+            normalized.includes(a)
+        ) {
+
+            return true;
+
+        }
+
+
+        const aliasTokens =
+            a
+                .split(" ")
+                .filter(Boolean);
+
+
+        if (
+            aliasTokens.length === 1
+        ) {
+
+            if (
+                tokens.some(
+                    token =>
+                        fuzzyTokenMatch(
+                            token,
+                            aliasTokens[0]
+                        )
+                )
+            ) {
+
+                return true;
+
+            }
+
+        }
+
+
+        if (
+            aliasTokens.length > 1
+        ) {
+
+            for (
+                let i = 0;
+                i <=
+                tokens.length -
+                aliasTokens.length;
+                i++
+            ) {
+
+                let matched =
+                    true;
+
+
+                for (
+                    let j = 0;
+                    j <
+                    aliasTokens.length;
+                    j++
+                ) {
+
+                    if (
+                        !fuzzyTokenMatch(
+                            tokens[i + j],
+                            aliasTokens[j]
+                        )
+                    ) {
+
+                        matched =
+                            false;
+
+                        break;
+
+                    }
+
+                }
+
+
+                if (matched) {
+
+                    return true;
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   LANGUAGE DETECTION
+========================================================= */
+
+function detectChatLanguage(
+    text
+) {
+
+    if (
+        /[\u0980-\u09FF]/.test(
+            text
+        )
+    ) {
+
+        return "bn";
+
+    }
+
+
+    const normalized =
+        normalizeChatText(
+            text
+        );
+
+
+    const banglishWords = [
+
+        "ami",
+        "apni",
+        "tumi",
+        "vai",
+        "bhai",
+        "kemon",
+        "kivabe",
+        "kibhabe",
+        "koto",
+        "koy",
+        "ase",
+        "ache",
+        "achen",
+        "aso",
+        "acho",
+        "chai",
+        "lagbe",
+        "hobe",
+        "korbo",
+        "korben",
+        "den",
+        "dao",
+        "dekhaw",
+        "dekhabo",
+        "amar",
+        "tomar",
+        "ekhane",
+        "ki",
+        "ke",
+        "nai",
+        "nei",
+        "dam",
+        "stock",
+        "order"
+    ];
+
+
+    if (
+        normalized
+            .split(" ")
+            .some(
+                word =>
+                    banglishWords
+                        .includes(word)
+            )
+    ) {
+
+        return "bi";
+
+    }
+
+
+    return "en";
+
+}
+
+
+/* =========================================================
+   KNOWLEDGE REPLY
+========================================================= */
+
+function chatReply(
+    key,
+    lang
+) {
+
+    const item =
+        TRUE_SELLER_KNOWLEDGE[key] ||
+        TRUE_SELLER_KNOWLEDGE.fallback;
+
+
+    return (
+        item[lang] ||
+        item.en
+    );
+
+}
+
+
+/* =========================================================
+   APPEND CHAT MESSAGE
+========================================================= */
+
+function appendAiMessage(
+    text,
+    type = "bot",
+    product = null
+) {
+
+    if (!aiMessages) return;
+
+
+    const bubble =
+        document.createElement(
+            "div"
+        );
+
+
+    bubble.className =
+        `ai-message ${type}`;
+
+
+    bubble.textContent =
+        text;
+
+
+    if (product) {
+
+        const productCard =
+            document.createElement(
+                "div"
+            );
+
+
+        productCard.className =
+            "ai-product";
+
+
+        const image =
+            document.createElement(
+                "img"
+            );
+
+
+        image.src =
+            product.image ||
+            product.imageUrl ||
+            "";
+
+
+        image.alt =
+            product.name ||
+            "Product";
+
+
+        const info =
+            document.createElement(
+                "div"
+            );
+
+
+        const strong =
+            document.createElement(
+                "strong"
+            );
+
+
+        strong.textContent =
+            product.name ||
+            "Product";
+
+
+        const details =
+            document.createElement(
+                "span"
+            );
+
+
+        details.textContent =
+            `💰 ৳${Number(
+                product.price || 0
+            ).toLocaleString()} • 📦 ${Number(
+                product.stock || 0
+            )} pcs`;
+
+
+        info.append(
+            strong,
+            details
+        );
+
+
+        productCard.append(
+            image,
+            info
+        );
+
+
+        bubble.append(
+            productCard
+        );
+
+    }
+
+
+    aiMessages.appendChild(
+        bubble
+    );
+
+
+    aiMessages.scrollTop =
+        aiMessages.scrollHeight;
+
+}
+
+
+/* =========================================================
+   FIND PRODUCT
+========================================================= */
+
+function findChatProduct(
+    text
+) {
+
+    const entries =
+        Object.entries(
+            products || {}
+        );
+
+
+    if (!entries.length) {
+
+        return null;
+
+    }
+
+
+    const normalized =
+        normalizeChatText(
+            text
+        );
+
+
+    const contextWords =
+        [
+            "this",
+            "that",
+            "it",
+            "eta",
+            "ota",
+            "etar",
+            "otar",
+            "eita",
+            "oita",
+            "eitaar",
+            "etar",
+            "ওই",
+            "এই",
+            "এটার",
+            "ওটার",
+            "এইটা",
+            "ওইটা",
+            "এটি",
+            "ওটি"
+        ];
+
+
+    if (
+        lastChatProductId &&
+        lastChatProduct &&
+        contextWords.some(
+            word =>
+                normalized.includes(
+                    word
+                )
+        )
+    ) {
+
+        return lastChatProduct;
+
+    }
+
+
+    let best =
+        null;
+
+    let bestScore =
+        0;
+
+
+    for (
+        const [id, product]
+        of entries
+    ) {
+
+        const name =
+            normalizeChatText(
+                product?.name || ""
+            );
+
+
+        if (!name) continue;
+
+
+        let score =
+            0;
+
+
+        if (
+            normalized.includes(
+                name
+            )
+        ) {
+
+            score += 10;
+
+        }
+
+
+        const nameTokens =
+            name
+                .split(" ")
+                .filter(
+                    token =>
+                        token.length >= 2
+                );
+
+
+        for (
+            const token
+            of nameTokens
+        ) {
+
+            if (
+                normalized.includes(
+                    token
+                )
+            ) {
+
+                score += 3;
+
+            } else if (
+                normalized
+                    .split(" ")
+                    .some(
+                        inputToken =>
+                            fuzzyTokenMatch(
+                                inputToken,
+                                token
+                            )
+                    )
+            ) {
+
+                score += 2;
+
+            }
+
+        }
+
+
+        if (
+            score > bestScore
+        ) {
+
+            bestScore =
+                score;
+
+            best = {
+
+                id:
+                    id,
+
+                product:
+                    product
+
+            };
+
+        }
+
+    }
+
+
+    if (
+        best &&
+        bestScore >= 3
+    ) {
+
+        lastChatProductId =
+            best.id;
+
+        lastChatProduct =
+            best.product;
+
+
+        return best.product;
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   PRODUCT INTENT
+========================================================= */
+
+function productIntent(
+    text
+) {
+
+    const t =
+        normalizeChatText(
+            text
+        );
+
+
+    return {
+
+        price:
+            /\b(price|prce|prise|prize|dam|damm|koto|koy|how much|kototuku)\b|দাম|মূল্য|কত/.test(t),
+
+        stock:
+            /\b(stock|stok|stck|stoke|available|avai|ase|ache|availble|availablee)\b|আছে|স্টক|অ্যাভেইলেবল/.test(t),
+
+        show:
+            /\b(show|see|dekh|dekhao|dekhaw|product|prodcut|pruduct|item|items|dekhi)\b|দেখাও|দেখি|পণ্য|প্রোডাক্ট/.test(t)
+
+    };
+
+}
+
+
+/* =========================================================
+   GREETING REPLY
+========================================================= */
+
+function getGreetingReply(
+    text,
+    lang
+) {
+
+    if (
+        textHasIntent(
+            text,
+            HOW_ARE_YOU_INTENTS
+        )
+    ) {
+
+        if (lang === "bn") {
+
+            return
+                "Alhamdulillah, আমি ভালো আছি। আপনি কেমন আছেন? 😊🤝";
+
+        }
+
+
+        if (lang === "bi") {
+
+            return
+                "Alhamdulillah, ami valo achi. Apni kemon achen? 😊🤝";
+
+        }
+
+
+        return
+            "Alhamdulillah, I am doing well. How are you? 😊🤝";
+
+    }
+
+
+    if (
+        textHasIntent(
+            text,
+            WHAT_DO_YOU_DO_INTENTS
+        )
+    ) {
+
+        if (lang === "bn") {
+
+            return
+                "🤖 আমি True Seller-এর AI Assistant। Product, price, stock, order এবং store information নিয়ে সাহায্য করি। 😊";
+
+        }
+
+
+        if (lang === "bi") {
+
+            return
+                "🤖 Ami True Seller-er AI Assistant. Product, price, stock, order ebong store information niye help kori. 😊";
+
+        }
+
+
+        return
+            "🤖 I am the True Seller AI Assistant. I help with products, prices, stock, orders, and store information. 😊";
+
+    }
+
+
+    if (
+        textHasIntent(
+            text,
+            GREETING_INTENTS
+        )
+    ) {
+
+        if (lang === "bn") {
+
+            return
+                "ওয়ালাইকুমুস সালাম! 😊 True Seller-এ আপনাকে স্বাগতম। কীভাবে সাহায্য করতে পারি? 🤝";
+
+        }
+
+
+        if (lang === "bi") {
+
+            return
+                "Walaikumussalam! 😊 True Seller-e apnake welcome. Kivabe help korte pari? 🤝";
+
+        }
+
+
+        return
+            "Hello! 😊 Welcome to True Seller. How can I help you? 🤝";
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   FAQ REPLY
+========================================================= */
+
+function getFaqReply(
+    text,
+    lang
+) {
+
+    for (
+        const intent
+        of FAQ_INTENTS
+    ) {
+
+        if (
+            textHasIntent(
+                text,
+                intent.words
+            )
+        ) {
+
+            return chatReply(
+                intent.answer,
+                lang
+            );
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   PRODUCT REPLY
+========================================================= */
+
+function getProductReply(
+    text,
+    lang
+) {
+
+    const product =
+        findChatProduct(
+            text
+        );
+
+
+    if (!product) {
+
+        return null;
+
+    }
+
+
+    const intent =
+        productIntent(
+            text
+        );
+
+
+    const name =
+        product.name ||
+        "Product";
+
+
+    const price =
+        Number(
+            product.price || 0
+        ).toLocaleString();
+
+
+    const stock =
+        Number(
+            product.stock || 0
+        );
+
+
+    if (
+        intent.price
+    ) {
+
+        if (lang === "bn") {
+
+            return
+                `🛍️ ${name} এর দাম ৳${price}। 😊`;
+
+        }
+
+
+        if (lang === "bi") {
+
+            return
+                `🛍️ ${name}-er dam ৳${price}. 😊`;
+
+        }
+
+
+        return
+            `🛍️ ${name} costs ৳${price}. 😊`;
+
+    }
+
+
+    if (
+        intent.stock
+    ) {
+
+        if (
+            stock > 0
+        ) {
+
+            if (lang === "bn") {
+
+                return
+                    `📦 ${name}-এর ${stock} pcs stock আছে। ✅😊`;
+
+            }
+
+
+            if (lang === "bi") {
+
+                return
+                    `📦 ${name}-er ${stock} pcs stock ache. ✅😊`;
+
+            }
+
+
+            return
+                `📦 ${name} has ${stock} pcs in stock. ✅😊`;
+
+        }
+
+
+        if (lang === "bn") {
+
+            return
+                `📦 দুঃখিত, ${name} এখন Out of Stock। 😔`;
+
+        }
+
+
+        if (lang === "bi") {
+
+            return
+                `📦 Sorry, ${name} ekhon out of stock. 😔`;
+
+        }
+
+
+        return
+            `📦 Sorry, ${name} is currently out of stock. 😔`;
+
+    }
+
+
+    if (
+        intent.show ||
+        product
+    ) {
+
+        return
+            `🛍️ ${name} 🔥
+💰 Price: ৳${price}
+📦 Stock: ${stock} pcs ${
+                stock > 0
+                    ? "✅"
+                    : "❌"
+            }`;
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   ADMIN NAME ALIASES
+========================================================= */
+
+const RIYAD_ALIASES = [
+
+    "riyad",
+    "ridwan",
+    "tiswan",
+    "munn",
+    "dionsur",
+    "riyyad",
+    "riyad bhai",
+    "ridwan bhai",
+    "riyad vai",
+    "ridwan vai",
+    "রিয়াদ",
+    "রিদওয়ান",
+    "তিসওয়ান",
+    "মুন্ন",
+    "রিয়াদ ভাই"
+
+];
+
+
+const SHAWON_ALIASES = [
+
+    "shawon",
+    "sagwon",
+    "abu touhid",
+    "abu towhid",
+    "touhid shawon",
+    "touhid",
+    "shawn",
+    "shawon bhai",
+    "shawon vai",
+    "sawon",
+    "শাওন",
+    "আবু তৌহিদ",
+    "তৌহিদ",
+    "শাওন ভাই"
+
+];
+
+
+/* =========================================================
+   ADMIN REPLY
+========================================================= */
+
+function getAdminReply(
+    text,
+    lang
+) {
+
+    const riyad =
+        textHasIntent(
+            text,
+            RIYAD_ALIASES
+        );
+
+
+    const shawon =
+        textHasIntent(
+            text,
+            SHAWON_ALIASES
+        );
+
+
+    if (
+        riyad &&
+        !shawon
+    ) {
+
+        if (lang === "bn") {
+
+            return
+                "👨‍💼 Riyad Ahmed (Ridwanul Hoque Riyad) True Seller-এর একজন admin এবং website developer। 💻😊";
+
+        }
+
+
+        if (lang === "bi") {
+
+            return
+                "👨‍💼 Riyad Ahmed (Ridwanul Hoque Riyad) True Seller-er ekjon admin ebong website developer. 💻😊";
+
+        }
+
+
+        return
+            "👨‍💼 Riyad Ahmed (Ridwanul Hoque Riyad) is an admin of True Seller and the website developer. 💻😊";
+
+    }
+
+
+    if (
+        shawon &&
+        !riyad
+    ) {
+
+        if (lang === "bn") {
+
+            return
+                "👨‍💼 Touhid Shawon True Seller-এর একজন admin। 😊";
+
+        }
+
+
+        if (lang === "bi") {
+
+            return
+                "👨‍💼 Touhid Shawon True Seller-er ekjon admin. 😊";
+
+        }
+
+
+        return
+            "👨‍💼 Touhid Shawon is an admin of True Seller. 😊";
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   MAIN AI RESPONSE
+========================================================= */
+
+function getHybridAiResponse(
+    text
+) {
+
+    const lang =
+        detectChatLanguage(
+            text
+        );
+
+
+    const adminReply =
+        getAdminReply(
+            text,
+            lang
+        );
+
+
+    if (adminReply) {
+
+        return adminReply;
+
+    }
+
+
+    const greeting =
+        getGreetingReply(
+            text,
+            lang
+        );
+
+
+    if (greeting) {
+
+        return greeting;
+
+    }
+
+
+    const faq =
+        getFaqReply(
+            text,
+            lang
+        );
+
+
+    if (faq) {
+
+        return faq;
+
+    }
+
+
+    const product =
+        getProductReply(
+            text,
+            lang
+        );
+
+
+    if (product) {
+
+        return product;
+
+    }
+
+
+    const normalized =
+        normalizeChatText(
+            text
+        );
+
+
+    if (
+        /\b(order|ordar|oder|odr|buy|purchase|order kor|order kivabe|how to order)\b/.test(
+            normalized
+        ) ||
+        /অর্ডার|কিভাবে অর্ডার/.test(
+            text
+        )
+    ) {
+
+        if (lang === "bn") {
+
+            return
+                "🛒 Product-এর Order button-এ click করে আপনার নাম, phone number, address এবং payment method দিয়ে order করতে পারবেন। 😊";
+
+        }
+
+
+        if (lang === "bi") {
+
+            return
+                "🛒 Product-er Order button-e click kore apnar naam, phone number, address ebong payment method diye order korte parben. 😊";
+
+        }
+
+
+        return
+            "🛒 Click the Order button on a product, then provide your name, phone number, address, and payment method. 😊";
+
+    }
+
+
+    if (
+        /\b(cool|nice|wow|great|good|valo|bhalo|darun)\b/.test(
+            normalized
+        ) ||
+        /ভালো|দারুণ/.test(
+            text
+        )
+    ) {
+
+        if (lang === "bn") {
+
+            return
+                "😊 ধন্যবাদ! আরও কিছু জানতে চাইলে বলুন। 🤝";
+
+        }
+
+
+        if (lang === "bi") {
+
+            return
+                "😊 Dhonnobad! Aro kichu jante chaile bolun. 🤝";
+
+        }
+
+
+        return
+            "😊 Thank you! Feel free to ask anything else. 🤝";
+
+    }
+
+
+    return chatReply(
+        "fallback",
+        lang
+    );
+
+}
+
+
+/* =========================================================
+   HYBRID CHAT INITIALIZE
+========================================================= */
+
+function initializeHybridChat() {
+
+    if (
+        !hybridChatButton ||
+        !hybridChatModal
+    ) {
+
+        return;
+
+    }
+
+
+    const openChatModal =
+        () => {
+
+            hybridChatModal.classList.add(
+                "active"
+            );
+
+            hybridChatModal.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+            document.body.style.overflow =
+                "hidden";
+
+        };
+
+
+    const closeChatModal =
+        () => {
+
+            hybridChatModal.classList.remove(
+                "active"
+            );
+
+            hybridChatModal.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            document.body.style.overflow =
+                "";
+
+        };
+
+
+    const showScreen =
+        (screen) => {
+
+            [
+                chatChoiceScreen,
+                aiAssistantScreen,
+                adminHelpScreen
+            ]
+                .forEach(
+                    item => {
+
+                        if (item) {
+
+                            item.classList.remove(
+                                "active"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+            if (screen) {
+
+                screen.classList.add(
+                    "active"
+                );
+
+            }
+
+        };
+
+
+    /* =====================================================
+       DRAG BUTTON
+    ===================================================== */
+
+    let startX =
+        0;
+
+    let startY =
+        0;
+
+    let moved =
+        false;
+
+    let dragging =
+        false;
+
+
+    hybridChatButton.addEventListener(
+        "pointerdown",
+        event => {
+
+            dragging =
+                true;
+
+            moved =
+                false;
+
+            startX =
+                event.clientX;
+
+            startY =
+                event.clientY;
+
+
+            if (
+                hybridChatButton.setPointerCapture
+            ) {
+
+                hybridChatButton.setPointerCapture(
+                    event.pointerId
+                );
+
+            }
+
+        }
+    );
+
+
+    hybridChatButton.addEventListener(
+        "pointermove",
+        event => {
+
+            if (!dragging) return;
+
+
+            const distance =
+                Math.hypot(
+                    event.clientX -
+                    startX,
+
+                    event.clientY -
+                    startY
+                );
+
+
+            if (
+                distance > 8
+            ) {
+
+                moved =
+                    true;
+
+            }
+
+
+            if (moved) {
+
+                const x =
+                    Math.max(
+                        8,
+                        Math.min(
+                            window.innerWidth -
+                            70,
+
+                            event.clientX -
+                            31
+                        )
+                    );
+
+
+                const y =
+                    Math.max(
+                        8,
+                        Math.min(
+                            window.innerHeight -
+                            70,
+
+                            event.clientY -
+                            31
+                        )
+                    );
+
+
+                hybridChatButton.style.left =
+                    `${x}px`;
+
+                hybridChatButton.style.top =
+                    `${y}px`;
+
+                hybridChatButton.style.right =
+                    "auto";
+
+                hybridChatButton.style.bottom =
+                    "auto";
+
+            }
+
+        }
+    );
+
+
+    hybridChatButton.addEventListener(
+        "pointerup",
+        () => {
+
+            if (
+                dragging &&
+                !moved
+            ) {
+
+                openChatModal();
+
+            }
+
+
+            dragging =
+                false;
+
+        }
+    );
+
+
+    hybridChatButton.addEventListener(
+        "pointercancel",
+        () => {
+
+            dragging =
+                false;
+
+        }
+    );
+
+
+    /* =====================================================
+       CLOSE CHAT
+    ===================================================== */
+
+    if (hybridChatClose) {
+
+        hybridChatClose.addEventListener(
+            "click",
+            closeChatModal
+        );
+
+    }
+
+
+    hybridChatModal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                hybridChatModal
+            ) {
+
+                closeChatModal();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       AI ASSISTANT
+    ===================================================== */
+
+    if (openAiAssistant) {
+
+        openAiAssistant.addEventListener(
+            "click",
+            () => {
+
+                showScreen(
+                    aiAssistantScreen
+                );
+
+
+                if (
+                    aiMessages &&
+                    !aiMessages.children.length
+                ) {
+
+                    appendAiMessage(
+                        "🤖 Assalamu Alaikum! I’m the True Seller AI Assistant. How can I help you? 😊"
+                    );
+
+                }
+
+
+                setTimeout(
+                    () => {
+
+                        if (aiChatInput) {
+
+                            aiChatInput.focus();
+
+                        }
+
+                    },
+                    0
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ADMIN HELP
+    ===================================================== */
+
+    if (openAdminHelp) {
+
+        openAdminHelp.addEventListener(
+            "click",
+            () => {
+
+                showScreen(
+                    adminHelpScreen
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       BACK BUTTONS
+    ===================================================== */
+
+    document
+        .querySelectorAll(
+            "[data-chat-back]"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        showScreen(
+                            chatChoiceScreen
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       AI CHAT FORM
+    ===================================================== */
+
+    if (aiChatForm) {
+
+        aiChatForm.addEventListener(
+            "submit",
+            event => {
+
+                event.preventDefault();
+
+
+                const text =
+                    aiChatInput
+                        ? aiChatInput.value.trim()
+                        : "";
+
+
+                if (!text) return;
+
+
+                appendAiMessage(
+                    text,
+                    "user"
+                );
+
+
+                if (aiChatInput) {
+
+                    aiChatInput.value =
+                        "";
+
+                }
+
+
+                /*
+                   NO ARTIFICIAL DELAY.
+                   Reply appears immediately.
+                */
+
+                const answer =
+                    getHybridAiResponse(
+                        text
+                    );
+
+
+                appendAiMessage(
+                    answer,
+                    "bot"
+                );
+
+            }
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   START HYBRID CHAT
+========================================================= */
+
+initializeHybridChat();
+
+
+/* =========================================================
+   END
+========================================================= */
