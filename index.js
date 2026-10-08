@@ -1282,7 +1282,7 @@ function escapeHtml(value) {
 ========================================= */
 
 const GEMINI_API_KEY =
-    "AQ.Ab8RN6IYudb93CnyHUYlWFY8vGQ3hINUfQ0LbO8vT-1Wy69hdw";
+    "AQ.Ab8RN6KupY9WKj8uSbVYFNOq9Je5CC7nYh9yyioYYbZalfgG4Q";
 
 const GEMINI_MODEL =
     "gemini-3.8-flash";
